@@ -1,0 +1,1819 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Colosseum e‑Card Editor</title><style>:root{--bg:#181b20!important;--panel:#22262c!important;--panel-raised:#2b3038!important;--line:#414852!important;--line-soft:#323840!important;--text:#e2e7ed!important;--text-dim:#a3acb8!important;--text-faint:#747e8a!important;--accent:#68a8e0!important;--accent-dim:#4677a5!important;--accent-glow:rgba(104,168,224,.18)!important;--ok:#68a8e0!important}body{background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.035) 1px,transparent 0)!important}.dropzone:hover,.dropzone.drag,.trainer-category:hover{background:rgba(104,168,224,.07)!important}button.primary{color:#0b1824!important}.section,.combo-panel{box-shadow:0 2px 8px rgba(0,0,0,.18)}</style>
+<style>:root{--bg:#0d1117;--panel:#131a24;--panel-raised:#182130;--line:#26313f;--line-soft:#1c2530;--text:#dbe4ee;--text-dim:#7c8a9a;--text-faint:#4d5a6a;--accent:#5ec8a6;--accent-dim:#2f6b58;--accent-glow:rgba(94,200,166,0.18);--warn:#e8b64c;--err:#e8654c;--err-glow:rgba(232,101,76,0.16);--ok:#5ec8a6;--mono:"IBM Plex Mono","SF Mono",Menlo,Consolas,monospace;--sans:"IBM Plex Sans","Segoe UI",sans-serif}*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased}body{background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,0.028) 1px,transparent 0);background-size:22px 22px}.wrap{max-width:980px;margin:0 auto;padding:28px 20px 80px}.masthead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px;flex-wrap:wrap}.masthead-id{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:var(--accent);text-transform:uppercase;border:1px solid var(--accent-dim);padding:3px 8px;border-radius:3px;background:var(--accent-glow)}.masthead h1{font-size:21px;margin:6px 0 4px;font-weight:650;letter-spacing:-0.01em}.masthead p{margin:0;color:var(--text-dim);font-size:13px;max-width:60ch}.masthead-right{text-align:right;font-family:var(--mono);font-size:11px;color:var(--text-faint);line-height:1.6}.section{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-bottom:18px;overflow:hidden}.section-head{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);background:var(--panel-raised)}.section-num{font-family:var(--mono);font-size:11px;color:var(--accent);background:var(--accent-glow);border:1px solid var(--accent-dim);width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.section-head h2{font-size:14px;margin:0;font-weight:600;letter-spacing:0.01em}.section-head .tag{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--text-faint);letter-spacing:0.04em}.section-body{padding:16px}.section-body.tight{padding:12px 16px}.dropzone{border:1.5px dashed var(--line);border-radius:7px;padding:26px 16px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;position:relative}.dropzone:hover,.dropzone.drag{border-color:var(--accent-dim);background:rgba(94,200,166,0.05)}.dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}.dropzone-icon{font-family:var(--mono);font-size:20px;color:var(--text-faint);margin-bottom:8px}.dropzone-title{font-size:13.5px;font-weight:600;margin-bottom:3px}.dropzone-sub{font-size:12px;color:var(--text-dim)}.upload-divider{display:flex;align-items:center;text-align:center;margin:14px 0;color:var(--text-faint);font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.05em}.upload-divider::before,.upload-divider::after{content:'';flex:1;height:1px;background:var(--line)}.upload-divider span{padding:0 10px}.status{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:6px;font-size:12.5px;line-height:1.5;margin-top:12px;border:1px solid var(--line)}.status.ok{border-color:var(--accent-dim);background:var(--accent-glow)}.status.err{border-color:#6b3a2f;background:var(--err-glow)}.status .dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}.status.ok .dot{background:var(--ok);box-shadow:0 0 6px var(--ok)}.status.err .dot{background:var(--err);box-shadow:0 0 6px var(--err)}.status strong{display:block;font-size:12.5px;margin-bottom:2px}.status code{font-family:var(--mono);background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-size:11.5px}.filemeta{font-family:var(--mono);font-size:11.5px;color:var(--text-dim);display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line-soft)}.filemeta div span{color:var(--text-faint);display:block;font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}.locked{opacity:0.38;pointer-events:none;filter:grayscale(0.4)}.field-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}#textBody>.field-grid{grid-template-columns:repeat(4,minmax(0,1fr))}#cardNumberField[hidden],#panelColourField[hidden]{display:none}@media (max-width:720px){#textBody>.field-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;display:flex;justify-content:space-between;align-items:baseline}.field label .off{font-family:var(--mono);color:var(--text-faint);text-transform:none;letter-spacing:0;font-size:10px}select,input[type=text],input[type=number],textarea{background:var(--bg);border:1px solid var(--line);color:var(--text);font-family:var(--sans);font-size:13px;padding:8px 9px;border-radius:5px;width:100%;outline:none;transition:border-color .12s}select{font-family:var(--sans);cursor:pointer}input[type=text].mono,input.hex{font-family:var(--mono)}select:focus,input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}select:disabled,input:disabled,textarea:disabled{opacity:0.45;cursor:not-allowed}textarea{min-height:86px;resize:vertical;line-height:1.45}textarea.invalid{border-color:var(--err)}.text-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}.text-grid + .subgrid-label{margin-top:20px}.shadow-dialogue-group{margin-top:18px}.text-help{margin:0 0 12px;color:var(--text-faint);font-size:11.5px;line-height:1.55}.text-counter{min-height:14px;color:var(--text-faint);font-family:var(--mono);font-size:10px}.text-counter.error{color:var(--err)}.combo{position:relative}.combo-input{background:var(--bg);border:1px solid var(--line);color:var(--text);font-family:var(--sans);font-size:13px;padding:8px 30px 8px 9px;border-radius:5px;width:100%;outline:none;transition:border-color .12s}.combo-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}.combo-input:disabled{opacity:0.45;cursor:not-allowed}.combo-input.invalid{border-color:var(--err)}.combo-caret{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:16px;height:16px;pointer-events:none;color:var(--text-faint);display:flex;align-items:center;justify-content:center}.combo-caret svg{width:10px;height:10px}.combo.open .combo-caret{color:var(--accent)}.combo-panel{position:fixed;z-index:1000;background:var(--panel-raised);border:1px solid var(--accent-dim);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,0.45);max-height:260px;overflow-y:auto;display:none}.combo-panel.show{display:block}.combo-option{padding:7px 10px;font-size:12.5px;cursor:pointer;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.combo-option mark{background:var(--accent-glow);color:var(--accent);border-radius:2px;padding:0 1px}.combo-option:hover,.combo-option.active{background:var(--accent-glow)}.combo-option.empty{color:var(--text-faint);cursor:default;font-style:italic}.combo-option.empty:hover{background:none}.subgrid-label{font-size:11px;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin:18px 0 8px;font-weight:600;display:flex;align-items:center;gap:8px}.subgrid-label:first-child{margin-top:0}.subgrid-label::after{content:"";flex:1;height:1px;background:var(--line)}.stat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}@media (max-width:720px){.stat-grid{grid-template-columns:repeat(3,1fr)}}.stat-field label{justify-content:center}.stat-field input{text-align:center;font-family:var(--mono)}.slot-select-row{display:flex;gap:10px;align-items:center;margin-bottom:4px}.slot-select-row select{flex:1}.slot-nav-btn{background:var(--panel-raised);border:1px solid var(--line);color:var(--text-dim);width:36px;height:36px;border-radius:5px;cursor:pointer;font-family:var(--mono);flex-shrink:0;transition:border-color .12s,color .12s}.slot-nav-btn:hover{border-color:var(--accent-dim);color:var(--accent)}.offset-strip{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.offset-chip{font-family:var(--mono);font-size:10.5px;padding:3px 7px;border-radius:4px;background:var(--panel-raised);border:1px solid var(--line);color:var(--text-faint)}.offset-chip.changed{border-color:var(--warn);color:var(--warn);background:rgba(232,182,76,0.09)}.field-warn{display:flex;align-items:flex-start;gap:5px;font-size:11px;line-height:1.5;color:var(--warn);background:rgba(232,182,76,0.09);border:1px solid var(--accent-dim);border-color:rgba(232,182,76,0.35);border-radius:5px;padding:6px 8px;margin-top:2px}.field-warn[hidden]{display:none}.trainer-category{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel-raised);border:1px solid var(--line);color:var(--text);padding:11px 12px;margin:0 0 8px;border-radius:6px;cursor:pointer;text-align:left;font-family:var(--sans);font-size:13px;font-weight:600;transition:border-color .12s,background .12s}.trainer-category:hover{border-color:var(--accent-dim);background:rgba(94,200,166,0.05)}.trainer-category[aria-expanded="true"]{border-color:var(--accent-dim);background:var(--accent-glow);margin-bottom:6px}.trainer-category-title{display:flex;align-items:center;gap:8px}.trainer-chevron{display:inline-block;width:12px;color:var(--accent);font-size:10px;transition:transform .12s}.trainer-category[aria-expanded="true"] .trainer-chevron{transform:rotate(90deg)}.trainer-category-count{font-family:var(--mono);font-size:10.5px;color:var(--text-faint);font-weight:400}.trainer-category-panel{padding:0 4px 10px}.trainer-name-row{display:grid;grid-template-columns:1fr auto;align-items:end;gap:10px;padding:7px 0}.trainer-name-row + .trainer-name-row{border-top:1px solid var(--line-soft)}.trainer-name-index{font-family:var(--mono);font-size:10px;color:var(--text-faint);padding:0 4px 9px 0}.trainer-category-panel[hidden]{display:none}.trainer-attr-block{background:transparent;border:0;border-radius:0;padding:0;margin:0 0 12px}.trainer-attr-block .field-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.trainer-attr-block .field-grid + .field-grid{margin-top:12px}.trainer-attr-block .subgrid-label{margin:12px 0 8px;font-size:10px}.trainer-attr-block .subgrid-label:first-child{margin-top:0}#nameBody .trainer-category{display:none}#nameBody .trainer-category-panel{padding:0}.combined-trainer-select{margin-bottom:14px}#cardBody{padding-bottom:8px}#textBody{padding-top:8px}#textBody>.field-grid + .field-grid{margin-top:16px}#nameBody{padding-top:6px}#slotBody>.field-grid + .field-grid{margin-top:12px}.combined-trainer-select label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.05em;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}.combined-divider{border-top:1px solid var(--line);margin:2px 0 16px;padding-top:14px;color:var(--text-faint);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.editor-subhead{border-top:1px solid var(--line);border-bottom:1px solid var(--line-soft);background:var(--panel-raised);color:var(--text-dim);padding:10px 16px;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.section-head + .editor-subhead{border-top:0}.btn-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}button.primary,button.secondary{font-family:var(--sans);font-size:13px;font-weight:600;padding:11px 18px;border-radius:6px;cursor:pointer;border:1px solid transparent;transition:transform .08s,filter .12s,background .12s}button.primary{background:var(--accent);color:#06120e}button.primary:hover{filter:brightness(1.08)}button.primary:active{transform:translateY(1px)}button.primary:disabled{background:var(--line);color:var(--text-faint);cursor:not-allowed}button.secondary{background:transparent;border-color:var(--line);color:var(--text-dim)}button.secondary:hover{border-color:var(--text-faint);color:var(--text)}.hint{font-size:11.5px;color:var(--text-faint);margin-top:10px;line-height:1.6}.card-id-preview{margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--text-faint)}.card-id-preview strong{color:var(--text-dim)}.footer-note{text-align:center;color:var(--text-faint);font-size:11px;margin-top:30px;font-family:var(--mono);letter-spacing:0.02em}.footer-note a{color:inherit}.footer-note a:hover{color:var(--text-dim)}::selection{background:var(--accent-dim);color:#fff}</style>
+</head><body><div class="wrap"><div class="masthead"><div><h1>Colosseum e&#8209;Card Editor</h1></div></div><div class="section" id="editorSection"><div class="section-body"><div class="dropzone" id="dropzone"><input type="file" id="fileInput" accept=".bin,.raw"><div class="dropzone-icon">&#8595;</div><div class="dropzone-title">Drop a decoded .bin or encrypted .raw e-Card file here, or click to browse.</div></div><div class="upload-divider"><span>or</span></div><button type="button" class="secondary" id="createNewBtn" style="width:100%;">Create new file</button><div id="statusArea"></div></div><div class="section-body locked" id="cardBody"><div class="field-grid"><div class="field"><label>Panel slot <span class="off">Default: 1</span></label><input type="number" id="panelSlotInput" min="0" max="255" step="1"></div><div class="field" id="cardNumberField"><label>Card number </label><select id="cardNumberSelect"></select><div class="card-id-preview" id="cardIdPreview"></div></div><div class="field" id="panelColourField"><label>Panel colour</label><select id="panelColourSelect"></select></div></div></div><div class="section-body locked" id="stadiumBody" hidden><div class="field-grid"><div class="field"><label>Battlefield </label><select id="battlefieldSelect"></select></div><div class="field"><label>Battlefield name </label><input type="text" id="battlefieldName" maxlength="15" spellcheck="false"></div></div></div><div class="section-body locked" id="textBody"><div class="field-grid"><div class="field"><label>Panel title</label><input type="text" id="cardTitle0A" spellcheck="false"></div><div class="field"><label>Easy </label><input type="text" id="cardText28" maxlength="7"></div><div class="field"><label>Normal </label><input type="text" id="cardText38" maxlength="7"></div><div class="field"><label>Hard </label><input type="text" id="cardText48" maxlength="7"></div></div></div><div class="section-body locked" id="nameBody"><div class="combined-trainer-select"><label for="teamSelect">Choose trainer</label><select id="teamSelect"></select></div><div class="trainer-category-panel" id="vrTrainerPanel" hidden><div class="trainer-name-row"><div class="field"><label>NAME <span class="off">max 5 characters</span></label><input type="text" id="vrInput1" maxlength="5" placeholder="NIENA"></div></div><div class="trainer-attr-block" data-trainer="vr0"></div><div class="trainer-name-row"><div class="field"><label>NAME <span class="off">max 5 characters</span></label><input type="text" id="vrInput2" maxlength="5" placeholder="NIENA"></div></div><div class="trainer-attr-block" data-trainer="vr1"></div><div class="trainer-name-row"><div class="field"><label>NAME <span class="off">max 5 characters</span></label><input type="text" id="vrInput3" maxlength="5" placeholder="NIENA"></div></div><div class="trainer-attr-block" data-trainer="vr2"></div></div><div class="trainer-category-panel" id="bonusTrainerPanel" hidden><div class="trainer-name-row"><div class="field"><label>NAME <span class="off">max 5 characters</span></label><input type="text" id="bonusInput1" maxlength="5" placeholder="GREGO"></div></div><div class="trainer-attr-block" data-trainer="bonus0"></div><div class="trainer-name-row"><div class="field"><label>NAME <span class="off">max 5 characters</span></label><input type="text" id="bonusInput2" maxlength="5" placeholder="GREGO"></div></div><div class="trainer-attr-block" data-trainer="bonus1"></div><div class="trainer-name-row"><div class="field"><label>NAME <span class="off">max 5 characters</span></label><input type="text" id="bonusInput3" maxlength="5" placeholder="GREGO"></div></div><div class="trainer-attr-block" data-trainer="bonus2"></div></div><div class="trainer-category-panel" id="shadowTrainerPanel" hidden><div class="trainer-name-row"><div class="field"><label>NAME <span class="off">max 5 characters</span></label><input type="text" id="team7Input" maxlength="5" placeholder="BODES"></div></div><div class="trainer-attr-block" data-trainer="team7"></div><div class="shadow-dialogue-group" id="shadowDialogue7" data-team="7"><div class="subgrid-label">Dialogue</div><p class="text-help">Use <code>{2B}</code> to insert the player&rsquo;s name.</p><div class="text-grid"></div></div><div class="trainer-name-row"><div class="field"><label>NAME <span class="off">max 5 characters</span></label><input type="text" id="team8Input" maxlength="5" placeholder="HORU"></div></div><div class="trainer-attr-block" data-trainer="team8"></div><div class="shadow-dialogue-group" id="shadowDialogue8" data-team="8"><div class="subgrid-label">Dialogue</div><p class="text-help">Use <code>{2B}</code> to insert the player&rsquo;s name.</p><div class="text-grid"></div></div><div class="trainer-name-row"><div class="field"><label>NAME <span class="off">max 5 characters</span></label><input type="text" id="team9Input" maxlength="5" placeholder="WABAN"></div></div><div class="trainer-attr-block" data-trainer="team9"></div><div class="shadow-dialogue-group" id="shadowDialogue9" data-team="9"><div class="subgrid-label">Dialogue</div><p class="text-help">Use <code>{2B}</code> to insert the player&rsquo;s name.</p><div class="text-grid"></div></div></div></div><div class="section-body locked" id="slotBody"><div class="slot-select-row"><button class="slot-nav-btn" id="slotPrev" title="Previous Pok&#233;mon">&#8592;</button><select id="slotSelect"></select><button class="slot-nav-btn" id="slotNext" title="Next Pok&#233;mon">&#8594;</button></div><div class="subgrid-label"></div><div class="field-grid"><div class="field"><label>Species </label><div class="combo" id="f_species_combo"><input type="text" class="combo-input" id="f_species" autocomplete="off" placeholder="Type to search&hellip;"><div class="combo-caret"><svg viewBox="0 0 10 10"><path d="M1 3 L5 7 L9 3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="combo-panel" id="f_species_panel"></div></div></div><div class="field"><label>Level </label><input type="number" id="f_level" min="1" max="100"></div><div class="field"><label>Shadow ID </label><input type="number" id="f_shadow" min="0" max="96"><div class="field-warn" id="f_shadow_warn" hidden>&#9888; Shadow Pok&#233;mon used by VR trainers cannot be snagged.</div></div><div class="field"><label>Gender </label><select id="f_gender"></select></div><div class="field"><label>Nature </label><select id="f_nature"></select></div><div class="field"><label>Item </label><div class="combo" id="f_item_combo"><input type="text" class="combo-input" id="f_item" autocomplete="off" placeholder="Type to search&hellip;"><div class="combo-caret"><svg viewBox="0 0 10 10"><path d="M1 3 L5 7 L9 3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="combo-panel" id="f_item_panel"></div></div></div><div class="field"><label>Ability slot </label><input type="number" id="f_ability" min="0" max="1"></div><div class="field"><label>Happiness </label><input type="number" id="f_happiness" min="0" max="255"></div><div class="field"><label>Heart gauge </label><input type="number" id="f_heart" min="0" max="255"></div></div><div class="field-grid"><div class="field"><label>Move 1 </label><div class="combo" id="f_move1_combo"><input type="text" class="combo-input" id="f_move1" autocomplete="off" placeholder="Type to search&hellip;"><div class="combo-caret"><svg viewBox="0 0 10 10"><path d="M1 3 L5 7 L9 3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="combo-panel" id="f_move1_panel"></div></div><div class="field-warn" id="f_move1_warn" hidden>&#9888; This move will be replaced with Shadow Rush until the Pok&#233;mon is purified.</div></div><div class="field"><label>Move 2 </label><div class="combo" id="f_move2_combo"><input type="text" class="combo-input" id="f_move2" autocomplete="off" placeholder="Type to search&hellip;"><div class="combo-caret"><svg viewBox="0 0 10 10"><path d="M1 3 L5 7 L9 3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="combo-panel" id="f_move2_panel"></div></div></div><div class="field"><label>Move 3 </label><div class="combo" id="f_move3_combo"><input type="text" class="combo-input" id="f_move3" autocomplete="off" placeholder="Type to search&hellip;"><div class="combo-caret"><svg viewBox="0 0 10 10"><path d="M1 3 L5 7 L9 3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="combo-panel" id="f_move3_panel"></div></div></div><div class="field"><label>Move 4 </label><div class="combo" id="f_move4_combo"><input type="text" class="combo-input" id="f_move4" autocomplete="off" placeholder="Type to search&hellip;"><div class="combo-caret"><svg viewBox="0 0 10 10"><path d="M1 3 L5 7 L9 3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="combo-panel" id="f_move4_panel"></div></div></div></div><div class="subgrid-label">IVs</div><div class="stat-grid"><div class="field stat-field"><label>HP</label><input type="number" id="f_ivHP" min="0" max="31"></div><div class="field stat-field"><label>Atk</label><input type="number" id="f_ivAtk" min="0" max="31"></div><div class="field stat-field"><label>Def</label><input type="number" id="f_ivDef" min="0" max="31"></div><div class="field stat-field"><label>SpA</label><input type="number" id="f_ivSpA" min="0" max="31"></div><div class="field stat-field"><label>SpD</label><input type="number" id="f_ivSpD" min="0" max="31"></div><div class="field stat-field"><label>Spe</label><input type="number" id="f_ivSpe" min="0" max="31"></div></div><div class="subgrid-label">EVs</div><div class="stat-grid"><div class="field stat-field"><label>HP</label><input type="number" id="f_evHP" min="0" max="255"></div><div class="field stat-field"><label>Atk</label><input type="number" id="f_evAtk" min="0" max="255"></div><div class="field stat-field"><label>Def</label><input type="number" id="f_evDef" min="0" max="255"></div><div class="field stat-field"><label>SpA</label><input type="number" id="f_evSpA" min="0" max="255"></div><div class="field stat-field"><label>SpD</label><input type="number" id="f_evSpD" min="0" max="255"></div><div class="field stat-field"><label>Spe</label><input type="number" id="f_evSpe" min="0" max="255"></div></div><div class="offset-strip" id="changedStrip"></div></div><div class="editor-subhead">Save</div><div class="section-body locked" id="exportBody"><div class="hint">This program would not be possible without StarsMMD's work decoding and documenting e-Card files and CaitSith2's work decrypting e-Card files.</div><div class="btn-row"><button class="primary" id="rawDownloadBtn" disabled>Download e-Card .raw file</button><button class="primary" id="downloadBtn" disabled>Download decoded .bin file</button><button class="secondary" id="resetBtn" disabled>Reset all edits</button></div></div></div></div><footer class="footer-note">This program is licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noopener noreferrer">GNU General Public License</a>.</footer>
+
+<script id="lookup-data" type="application/json">{"species":[[63,"ABRA"],[376,"ABSOL"],[142,"AERODACTYL"],[384,"AGGRON"],[190,"AIPOM"],[65,"ALAKAZAM"],[359,"ALTARIA"],[181,"AMPHAROS"],[390,"ANORITH"],[24,"ARBOK"],[59,"ARCANINE"],[168,"ARIADOS"],[391,"ARMALDO"],[382,"ARON"],[144,"ARTICUNO"],[184,"AZUMARILL"],[350,"AZURILL"],[395,"BAGON"],[318,"BALTOY"],[378,"BANETTE"],[323,"BARBOACH"],[153,"BAYLEEF"],[292,"BEAUTIFLY"],[15,"BEEDRILL"],[398,"BELDUM"],[182,"BELLOSSOM"],[69,"BELLSPROUT"],[9,"BLASTOISE"],[282,"BLAZIKEN"],[242,"BLISSEY"],[307,"BRELOOM"],[1,"BULBASAUR"],[12,"BUTTERFREE"],[344,"CACNEA"],[345,"CACTURNE"],[340,"CAMERUPT"],[330,"CARVANHA"],[293,"CASCOON"],[385,"CASTFORM"],[10,"CATERPIE"],[251,"CELEBI"],[113,"CHANSEY"],[6,"CHARIZARD"],[4,"CHARMANDER"],[5,"CHARMELEON"],[152,"CHIKORITA"],[411,"CHIMECHO"],[170,"CHINCHOU"],[373,"CLAMPERL"],[319,"CLAYDOL"],[36,"CLEFABLE"],[35,"CLEFAIRY"],[173,"CLEFFA"],[91,"CLOYSTER"],[281,"COMBUSKEN"],[326,"CORPHISH"],[222,"CORSOLA"],[389,"CRADILY"],[327,"CRAWDAUNT"],[169,"CROBAT"],[159,"CROCONAW"],[104,"CUBONE"],[155,"CYNDAQUIL"],[316,"DELCATTY"],[225,"DELIBIRD"],[410,"DEOXYS"],[87,"DEWGONG"],[50,"DIGLETT"],[132,"DITTO"],[85,"DODRIO"],[84,"DODUO"],[232,"DONPHAN"],[148,"DRAGONAIR"],[149,"DRAGONITE"],[147,"DRATINI"],[96,"DROWZEE"],[51,"DUGTRIO"],[206,"DUNSPARCE"],[362,"DUSCLOPS"],[361,"DUSKULL"],[294,"DUSTOX"],[133,"EEVEE"],[23,"EKANS"],[125,"ELECTABUZZ"],[337,"ELECTRIKE"],[101,"ELECTRODE"],[239,"ELEKID"],[244,"ENTEI"],[196,"ESPEON"],[102,"EXEGGCUTE"],[103,"EXEGGUTOR"],[372,"EXPLOUD"],[83,"FARFETCH'D"],[22,"FEAROW"],[328,"FEEBAS"],[160,"FERALIGATR"],[180,"FLAAFFY"],[136,"FLAREON"],[334,"FLYGON"],[205,"FORRETRESS"],[162,"FURRET"],[394,"GARDEVOIR"],[92,"GASTLY"],[94,"GENGAR"],[74,"GEODUDE"],[203,"GIRAFARIG"],[347,"GLALIE"],[207,"GLIGAR"],[44,"GLOOM"],[42,"GOLBAT"],[118,"GOLDEEN"],[55,"GOLDUCK"],[76,"GOLEM"],[375,"GOREBYSS"],[210,"GRANBULL"],[75,"GRAVELER"],[88,"GRIMER"],[405,"GROUDON"],[278,"GROVYLE"],[58,"GROWLITHE"],[352,"GRUMPIG"],[367,"GULPIN"],[130,"GYARADOS"],[336,"HARIYAMA"],[93,"HAUNTER"],[214,"HERACROSS"],[107,"HITMONCHAN"],[106,"HITMONLEE"],[237,"HITMONTOP"],[250,"HO-OH"],[163,"HOOTHOOT"],[187,"HOPPIP"],[116,"HORSEA"],[229,"HOUNDOOM"],[228,"HOUNDOUR"],[374,"HUNTAIL"],[97,"HYPNO"],[174,"IGGLYBUFF"],[387,"ILLUMISE"],[2,"IVYSAUR"],[39,"JIGGLYPUFF"],[409,"JIRACHI"],[135,"JOLTEON"],[189,"JUMPLUFF"],[124,"JYNX"],[140,"KABUTO"],[141,"KABUTOPS"],[64,"KADABRA"],[14,"KAKUNA"],[115,"KANGASKHAN"],[317,"KECLEON"],[230,"KINGDRA"],[99,"KINGLER"],[393,"KIRLIA"],[109,"KOFFING"],[98,"KRABBY"],[404,"KYOGRE"],[383,"LAIRON"],[171,"LANTURN"],[131,"LAPRAS"],[246,"LARVITAR"],[407,"LATIAS"],[408,"LATIOS"],[166,"LEDIAN"],[165,"LEDYBA"],[108,"LICKITUNG"],[388,"LILEEP"],[289,"LINOONE"],[296,"LOMBRE"],[295,"LOTAD"],[371,"LOUDRED"],[297,"LUDICOLO"],[249,"LUGIA"],[348,"LUNATONE"],[325,"LUVDISC"],[68,"MACHAMP"],[67,"MACHOKE"],[66,"MACHOP"],[240,"MAGBY"],[219,"MAGCARGO"],[129,"MAGIKARP"],[126,"MAGMAR"],[81,"MAGNEMITE"],[82,"MAGNETON"],[335,"MAKUHITA"],[338,"MANECTRIC"],[56,"MANKEY"],[226,"MANTINE"],[179,"MAREEP"],[183,"MARILL"],[105,"MAROWAK"],[284,"MARSHTOMP"],[312,"MASQUERAIN"],[355,"MAWILE"],[357,"MEDICHAM"],[356,"MEDITITE"],[154,"MEGANIUM"],[52,"MEOWTH"],[400,"METAGROSS"],[399,"METANG"],[11,"METAPOD"],[151,"MEW"],[150,"MEWTWO"],[287,"MIGHTYENA"],[329,"MILOTIC"],[241,"MILTANK"],[354,"MINUN"],[200,"MISDREAVUS"],[146,"MOLTRES"],[122,"MR. MIME"],[283,"MUDKIP"],[89,"MUK"],[198,"MURKROW"],[177,"NATU"],[34,"NIDOKING"],[31,"NIDOQUEEN"],[29,"NIDORAN♀"],[32,"NIDORAN♂"],[30,"NIDORINA"],[33,"NIDORINO"],[301,"NINCADA"],[38,"NINETALES"],[302,"NINJASK"],[164,"NOCTOWL"],[320,"NOSEPASS"],[339,"NUMEL"],[299,"NUZLEAF"],[224,"OCTILLERY"],[43,"ODDISH"],[138,"OMANYTE"],[139,"OMASTAR"],[95,"ONIX"],[46,"PARAS"],[47,"PARASECT"],[310,"PELIPPER"],[53,"PERSIAN"],[231,"PHANPY"],[172,"PICHU"],[18,"PIDGEOT"],[17,"PIDGEOTTO"],[16,"PIDGEY"],[25,"PIKACHU"],[221,"PILOSWINE"],[204,"PINECO"],[127,"PINSIR"],[353,"PLUSLE"],[412,"POKÉMON EGG"],[186,"POLITOED"],[60,"POLIWAG"],[61,"POLIWHIRL"],[62,"POLIWRATH"],[77,"PONYTA"],[286,"POOCHYENA"],[137,"PORYGON"],[233,"PORYGON2"],[57,"PRIMEAPE"],[54,"PSYDUCK"],[247,"PUPITAR"],[195,"QUAGSIRE"],[156,"QUILAVA"],[211,"QWILFISH"],[26,"RAICHU"],[243,"RAIKOU"],[392,"RALTS"],[78,"RAPIDASH"],[20,"RATICATE"],[19,"RATTATA"],[406,"RAYQUAZA"],[402,"REGICE"],[401,"REGIROCK"],[403,"REGISTEEL"],[381,"RELICANTH"],[223,"REMORAID"],[112,"RHYDON"],[111,"RHYHORN"],[363,"ROSELIA"],[322,"SABLEYE"],[397,"SALAMENCE"],[27,"SANDSHREW"],[28,"SANDSLASH"],[279,"SCEPTILE"],[212,"SCIZOR"],[123,"SCYTHER"],[117,"SEADRA"],[119,"SEAKING"],[342,"SEALEO"],[298,"SEEDOT"],[86,"SEEL"],[161,"SENTRET"],[379,"SEVIPER"],[331,"SHARPEDO"],[303,"SHEDINJA"],[396,"SHELGON"],[90,"SHELLDER"],[300,"SHIFTRY"],[306,"SHROOMISH"],[213,"SHUCKLE"],[377,"SHUPPET"],[291,"SILCOON"],[227,"SKARMORY"],[188,"SKIPLOOM"],[315,"SKITTY"],[366,"SLAKING"],[364,"SLAKOTH"],[80,"SLOWBRO"],[199,"SLOWKING"],[79,"SLOWPOKE"],[218,"SLUGMA"],[235,"SMEARGLE"],[238,"SMOOCHUM"],[215,"SNEASEL"],[143,"SNORLAX"],[346,"SNORUNT"],[209,"SNUBBULL"],[349,"SOLROCK"],[21,"SPEAROW"],[341,"SPHEAL"],[167,"SPINARAK"],[308,"SPINDA"],[351,"SPOINK"],[7,"SQUIRTLE"],[234,"STANTLER"],[121,"STARMIE"],[120,"STARYU"],[208,"STEELIX"],[185,"SUDOWOODO"],[245,"SUICUNE"],[192,"SUNFLORA"],[191,"SUNKERN"],[311,"SURSKIT"],[358,"SWABLU"],[368,"SWALOT"],[285,"SWAMPERT"],[305,"SWELLOW"],[220,"SWINUB"],[304,"TAILLOW"],[114,"TANGELA"],[128,"TAUROS"],[216,"TEDDIURSA"],[72,"TENTACOOL"],[73,"TENTACRUEL"],[175,"TOGEPI"],[176,"TOGETIC"],[280,"TORCHIC"],[321,"TORKOAL"],[158,"TOTODILE"],[332,"TRAPINCH"],[277,"TREECKO"],[369,"TROPIUS"],[157,"TYPHLOSION"],[248,"TYRANITAR"],[236,"TYROGUE"],[197,"UMBREON"],[201,"UNOWN"],[413,"UNOWN (B)"],[414,"UNOWN (C)"],[415,"UNOWN (D)"],[416,"UNOWN (E)"],[417,"UNOWN (F)"],[418,"UNOWN (G)"],[419,"UNOWN (H)"],[420,"UNOWN (I)"],[421,"UNOWN (J)"],[422,"UNOWN (K)"],[423,"UNOWN (L)"],[424,"UNOWN (M)"],[425,"UNOWN (N)"],[426,"UNOWN (O)"],[427,"UNOWN (P)"],[428,"UNOWN (Q)"],[429,"UNOWN (R)"],[430,"UNOWN (S)"],[431,"UNOWN (T)"],[432,"UNOWN (U)"],[433,"UNOWN (V)"],[434,"UNOWN (W)"],[435,"UNOWN (X)"],[436,"UNOWN (Y)"],[437,"UNOWN (Z)"],[438,"UNOWN (!)"],[439,"UNOWN (?)"],[217,"URSARING"],[134,"VAPOREON"],[49,"VENOMOTH"],[48,"VENONAT"],[3,"VENUSAUR"],[333,"VIBRAVA"],[71,"VICTREEBEL"],[365,"VIGOROTH"],[45,"VILEPLUME"],[386,"VOLBEAT"],[100,"VOLTORB"],[37,"VULPIX"],[313,"WAILMER"],[314,"WAILORD"],[343,"WALREIN"],[8,"WARTORTLE"],[13,"WEEDLE"],[70,"WEEPINBELL"],[110,"WEEZING"],[324,"WHISCASH"],[370,"WHISMUR"],[40,"WIGGLYTUFF"],[309,"WINGULL"],[202,"WOBBUFFET"],[194,"WOOPER"],[290,"WURMPLE"],[360,"WYNAUT"],[178,"XATU"],[193,"YANMA"],[380,"ZANGOOSE"],[145,"ZAPDOS"],[288,"ZIGZAGOON"],[41,"ZUBAT"]],"moves":[[0,"NO MOVE"],[71,"ABSORB"],[51,"ACID"],[151,"ACID ARMOR"],[332,"AERIAL ACE"],[177,"AEROBLAST"],[97,"AGILITY"],[314,"AIR CUTTER"],[133,"AMNESIA"],[246,"ANCIENTPOWER"],[292,"ARM THRUST"],[312,"AROMATHERAPY"],[274,"ASSIST"],[310,"ASTONISH"],[213,"ATTRACT"],[62,"AURORA BEAM"],[140,"BARRAGE"],[112,"BARRIER"],[226,"BATON PASS"],[251,"BEAT UP"],[187,"BELLY DRUM"],[117,"BIDE"],[20,"BIND"],[44,"BITE"],[307,"BLAST BURN"],[299,"BLAZE KICK"],[59,"BLIZZARD"],[335,"BLOCK"],[34,"BODY SLAM"],[125,"BONE CLUB"],[198,"BONE RUSH"],[155,"BONEMERANG"],[340,"BOUNCE"],[280,"BRICK BREAK"],[145,"BUBBLE"],[61,"BUBBLEBEAM"],[339,"BULK UP"],[331,"BULLET SEED"],[347,"CALM MIND"],[293,"CAMOUFLAGE"],[268,"CHARGE"],[204,"CHARM"],[128,"CLAMP"],[4,"COMET PUNCH"],[109,"CONFUSE RAY"],[93,"CONFUSION"],[132,"CONSTRICT"],[160,"CONVERSION"],[176,"CONVERSION 2"],[322,"COSMIC POWER"],[178,"COTTON SPORE"],[68,"COUNTER"],[343,"COVET"],[152,"CRABHAMMER"],[238,"CROSS CHOP"],[242,"CRUNCH"],[306,"CRUSH CLAW"],[174,"CURSE"],[15,"CUT"],[111,"DEFENSE CURL"],[194,"DESTINY BOND"],[197,"DETECT"],[91,"DIG"],[50,"DISABLE"],[291,"DIVE"],[146,"DIZZY PUNCH"],[353,"DOOM DESIRE"],[24,"DOUBLE KICK"],[3,"DOUBLESLAP"],[104,"DOUBLE TEAM"],[38,"DOUBLE-EDGE"],[225,"DRAGONBREATH"],[337,"DRAGON CLAW"],[349,"DRAGON DANCE"],[82,"DRAGON RAGE"],[138,"DREAM EATER"],[65,"DRILL PECK"],[223,"DYNAMICPUNCH"],[89,"EARTHQUAKE"],[121,"EGG BOMB"],[52,"EMBER"],[227,"ENCORE"],[283,"ENDEAVOR"],[203,"ENDURE"],[284,"ERUPTION"],[153,"EXPLOSION"],[326,"EXTRASENSORY"],[245,"EXTREMESPEED"],[263,"FACADE"],[185,"FAINT ATTACK"],[252,"FAKE OUT"],[313,"FAKE TEARS"],[206,"FALSE SWIPE"],[297,"FEATHERDANCE"],[126,"FIRE BLAST"],[7,"FIRE PUNCH"],[83,"FIRE SPIN"],[90,"FISSURE"],[175,"FLAIL"],[172,"FLAME WHEEL"],[53,"FLAMETHROWER"],[148,"FLASH"],[260,"FLATTER"],[19,"FLY"],[116,"FOCUS ENERGY"],[264,"FOCUS PUNCH"],[266,"FOLLOW ME"],[193,"FORESIGHT"],[338,"FRENZY PLANT"],[218,"FRUSTRATION"],[31,"FURY ATTACK"],[210,"FURY CUTTER"],[154,"FURY SWIPES"],[248,"FUTURE SIGHT"],[202,"GIGA DRAIN"],[137,"GLARE"],[320,"GRASSWHISTLE"],[45,"GROWL"],[74,"GROWTH"],[288,"GRUDGE"],[12,"GUILLOTINE"],[16,"GUST"],[258,"HAIL"],[106,"HARDEN"],[114,"HAZE"],[29,"HEADBUTT"],[215,"HEAL BELL"],[257,"HEAT WAVE"],[270,"HELPING HAND"],[237,"HIDDEN POWER"],[136,"HI JUMP KICK"],[30,"HORN ATTACK"],[32,"HORN DRILL"],[336,"HOWL"],[308,"HYDRO CANNON"],[56,"HYDRO PUMP"],[63,"HYPER BEAM"],[158,"HYPER FANG"],[304,"HYPER VOICE"],[95,"HYPNOSIS"],[301,"ICE BALL"],[58,"ICE BEAM"],[8,"ICE PUNCH"],[333,"ICICLE SPEAR"],[196,"ICY WIND"],[286,"IMPRISON"],[275,"INGRAIN"],[334,"IRON DEFENSE"],[231,"IRON TAIL"],[26,"JUMP KICK"],[2,"KARATE CHOP"],[134,"KINESIS"],[282,"KNOCK OFF"],[348,"LEAF BLADE"],[141,"LEECH LIFE"],[73,"LEECH SEED"],[43,"LEER"],[122,"LICK"],[113,"LIGHT SCREEN"],[199,"LOCK-ON"],[142,"LOVELY KISS"],[67,"LOW KICK"],[295,"LUSTER PURGE"],[183,"MACH PUNCH"],[277,"MAGIC COAT"],[345,"MAGICAL LEAF"],[222,"MAGNITUDE"],[212,"MEAN LOOK"],[96,"MEDITATE"],[72,"MEGA DRAIN"],[25,"MEGA KICK"],[5,"MEGA PUNCH"],[224,"MEGAHORN"],[262,"MEMENTO"],[232,"METAL CLAW"],[319,"METAL SOUND"],[309,"METEOR MASH"],[118,"METRONOME"],[208,"MILK DRINK"],[102,"MIMIC"],[170,"MIND READER"],[107,"MINIMIZE"],[243,"MIRROR COAT"],[119,"MIRROR MOVE"],[54,"MIST"],[296,"MIST BALL"],[236,"MOONLIGHT"],[234,"MORNING SUN"],[341,"MUD SHOT"],[300,"MUD SPORT"],[189,"MUD-SLAP"],[330,"MUDDY WATER"],[267,"NATURE POWER"],[302,"NEEDLE ARM"],[101,"NIGHT SHADE"],[171,"NIGHTMARE"],[190,"OCTAZOOKA"],[316,"ODOR SLEUTH"],[200,"OUTRAGE"],[315,"OVERHEAT"],[220,"PAIN SPLIT"],[6,"PAY DAY"],[64,"PECK"],[195,"PERISH SONG"],[80,"PETAL DANCE"],[42,"PIN MISSILE"],[305,"POISON FANG"],[139,"POISON GAS"],[77,"POISONPOWDER"],[40,"POISON STING"],[342,"POISON TAIL"],[1,"POUND"],[181,"POWDER SNOW"],[217,"PRESENT"],[182,"PROTECT"],[60,"PSYBEAM"],[244,"PSYCH UP"],[94,"PSYCHIC"],[354,"PSYCHO BOOST"],[149,"PSYWAVE"],[228,"PURSUIT"],[98,"QUICK ATTACK"],[99,"RAGE"],[240,"RAIN DANCE"],[229,"RAPID SPIN"],[75,"RAZOR LEAF"],[13,"RAZOR WIND"],[105,"RECOVER"],[278,"RECYCLE"],[115,"REFLECT"],[287,"REFRESH"],[156,"REST"],[216,"RETURN"],[279,"REVENGE"],[179,"REVERSAL"],[46,"ROAR"],[350,"ROCK BLAST"],[157,"ROCK SLIDE"],[249,"ROCK SMASH"],[88,"ROCK THROW"],[317,"ROCK TOMB"],[272,"ROLE PLAY"],[27,"ROLLING KICK"],[205,"ROLLOUT"],[221,"SACRED FIRE"],[219,"SAFEGUARD"],[28,"SAND-ATTACK"],[328,"SAND TOMB"],[201,"SANDSTORM"],[184,"SCARY FACE"],[10,"SCRATCH"],[103,"SCREECH"],[290,"SECRET POWER"],[69,"SEISMIC TOSS"],[120,"SELFDESTRUCT"],[247,"SHADOW BALL"],[325,"SHADOW PUNCH"],[356,"SHADOW RUSH"],[159,"SHARPEN"],[329,"SHEER COLD"],[351,"SHOCK WAVE"],[324,"SIGNAL BEAM"],[318,"SILVER WIND"],[47,"SING"],[166,"SKETCH"],[285,"SKILL SWAP"],[130,"SKULL BASH"],[143,"SKY ATTACK"],[327,"SKY UPPERCUT"],[303,"SLACK OFF"],[21,"SLAM"],[163,"SLASH"],[79,"SLEEP POWDER"],[214,"SLEEP TALK"],[124,"SLUDGE"],[188,"SLUDGE BOMB"],[265,"SMELLINGSALT"],[123,"SMOG"],[108,"SMOKESCREEN"],[289,"SNATCH"],[173,"SNORE"],[135,"SOFTBOILED"],[76,"SOLARBEAM"],[49,"SONICBOOM"],[209,"SPARK"],[169,"SPIDER WEB"],[131,"SPIKE CANNON"],[191,"SPIKES"],[255,"SPIT UP"],[180,"SPITE"],[150,"SPLASH"],[147,"SPORE"],[211,"STEEL WING"],[254,"STOCKPILE"],[23,"STOMP"],[70,"STRENGTH"],[81,"STRING SHOT"],[165,"STRUGGLE"],[78,"STUN SPORE"],[66,"SUBMISSION"],[164,"SUBSTITUTE"],[241,"SUNNY DAY"],[162,"SUPER FANG"],[276,"SUPERPOWER"],[48,"SUPERSONIC"],[57,"SURF"],[207,"SWAGGER"],[256,"SWALLOW"],[186,"SWEET KISS"],[230,"SWEET SCENT"],[129,"SWIFT"],[14,"SWORDS DANCE"],[235,"SYNTHESIS"],[33,"TACKLE"],[294,"TAIL GLOW"],[39,"TAIL WHIP"],[36,"TAKE DOWN"],[269,"TAUNT"],[298,"TEETER DANCE"],[100,"TELEPORT"],[168,"THIEF"],[37,"THRASH"],[87,"THUNDER"],[86,"THUNDER WAVE"],[85,"THUNDERBOLT"],[9,"THUNDERPUNCH"],[84,"THUNDERSHOCK"],[321,"TICKLE"],[259,"TORMENT"],[92,"TOXIC"],[144,"TRANSFORM"],[161,"TRI ATTACK"],[271,"TRICK"],[167,"TRIPLE KICK"],[41,"TWINEEDLE"],[239,"TWISTER"],[253,"UPROAR"],[22,"VINE WHIP"],[11,"VICEGRIP"],[233,"VITAL THROW"],[344,"VOLT TACKLE"],[55,"WATER GUN"],[352,"WATER PULSE"],[346,"WATER SPORT"],[323,"WATER SPOUT"],[127,"WATERFALL"],[311,"WEATHER BALL"],[250,"WHIRLPOOL"],[18,"WHIRLWIND"],[261,"WILL-O-WISP"],[17,"WING ATTACK"],[273,"WISH"],[110,"WITHDRAW"],[35,"WRAP"],[281,"YAWN"],[192,"ZAP CANNON"]],"items":[[0,"NONE"],[146,"AGUAV BERRY"],[189,"AMULET COIN"],[14,"ANTIDOTE"],[172,"APICOT BERRY"],[137,"ASPEAR BERRY"],[17,"AWAKENING"],[167,"BELUE BERRY"],[44,"BERRY JUICE"],[104,"BIG MUSHROOM"],[107,"BIG PEARL"],[207,"BLACK BELT"],[42,"BLACK FLUTE"],[206,"BLACKGLASSES"],[535,"BLU ID BADGE"],[39,"BLUE FLUTE"],[255,"BLUE SCARF"],[49,"BLUE SHARD"],[149,"BLUK BERRY"],[179,"BRIGHTPOWDER"],[15,"BURN HEAL"],[67,"CALCIUM"],[66,"CARBOS"],[510,"CARD KEY"],[215,"CHARCOAL"],[133,"CHERI BERRY"],[134,"CHESTO BERRY"],[186,"CHOICE BAND"],[190,"CLEANSE TAG"],[542,"COLOGNE CASE"],[159,"CORNN BERRY"],[506,"D-DISK"],[530,"DATA ROM"],[193,"DEEPSEASCALE"],[192,"DEEPSEATOOTH"],[74,"DIRE HIT"],[7,"DIVE BALL"],[512,"DNA SAMPLE"],[513,"DNA SAMPLE"],[514,"DNA SAMPLE"],[515,"DNA SAMPLE"],[516,"DNA SAMPLE"],[517,"DNA SAMPLE"],[518,"DNA SAMPLE"],[519,"DNA SAMPLE"],[520,"DNA SAMPLE"],[521,"DNA SAMPLE"],[522,"DNA SAMPLE"],[523,"DNA SAMPLE"],[524,"DNA SAMPLE"],[525,"DNA SAMPLE"],[526,"DNA SAMPLE"],[527,"DNA SAMPLE"],[528,"DNA SAMPLE"],[529,"DNA SAMPLE"],[511,"DOWN ST. KEY"],[216,"DRAGON FANG"],[201,"DRAGON SCALE"],[166,"DURIN BERRY"],[540,"EIN FILE C"],[547,"EIN FILE F"],[539,"EIN FILE H"],[541,"EIN FILE P"],[538,"EIN FILE S"],[501,"ELEVATOR KEY"],[36,"ELIXIR"],[31,"ENERGY ROOT"],[30,"ENERGYPOWDER"],[85,"ESCAPE ROPE"],[34,"ETHER"],[195,"EVERSTONE"],[544,"EXCITE SCENT"],[182,"EXP. SHARE"],[503,"F-DISK"],[143,"FIGY BERRY"],[95,"FIRE STONE"],[81,"FLUFFY TAIL"],[196,"FOCUS BAND"],[26,"FRESH WATER"],[23,"FULL HEAL"],[19,"FULL RESTORE"],[169,"GANLON BERRY"],[532,"GEAR"],[3,"GREAT BALL"],[257,"GREEN SCARF"],[51,"GREEN SHARD"],[157,"GREPA BERRY"],[534,"GRN ID BADGE"],[73,"GUARD SPEC."],[204,"HARD STONE"],[32,"HEAL POWDER"],[111,"HEART SCALE"],[156,"HONDEW BERRY"],[63,"HP UP"],[21,"HYPER POTION"],[147,"IAPAPA BERRY"],[16,"ICE HEAL"],[65,"IRON"],[500,"JAIL KEY"],[543,"JOY SCENT"],[154,"KELPSY BERRY"],[187,"KING'S ROCK"],[505,"L-DISK"],[173,"LANSAT BERRY"],[38,"LAVA COOKIE"],[221,"LAX INCENSE"],[98,"LEAF STONE"],[200,"LEFTOVERS"],[28,"LEMONADE"],[138,"LEPPA BERRY"],[168,"LIECHI BERRY"],[202,"LIGHT BALL"],[197,"LUCKY EGG"],[222,"LUCKY PUNCH"],[141,"LUM BERRY"],[11,"LUXURY BALL"],[181,"MACHO BRACE"],[208,"MAGNET"],[145,"MAGO BERRY"],[160,"MAGOST BERRY"],[509,"MAINGATE KEY"],[1,"MASTER BALL"],[37,"MAX ELIXIR"],[35,"MAX ETHER"],[20,"MAX POTION"],[84,"MAX REPEL"],[25,"MAX REVIVE"],[185,"MENTAL HERB"],[199,"METAL COAT"],[223,"METAL POWDER"],[205,"MIRACLE SEED"],[29,"MOOMOO MILK"],[94,"MOON STONE"],[209,"MYSTIC WATER"],[150,"NANAB BERRY"],[8,"NEST BALL"],[6,"NET BALL"],[212,"NEVERMELTICE"],[162,"NOMEL BERRY"],[110,"NUGGET"],[139,"ORAN BERRY"],[164,"PAMTRE BERRY"],[18,"PARLYZ HEAL"],[106,"PEARL"],[135,"PECHA BERRY"],[140,"PERSIM BERRY"],[171,"PETAYA BERRY"],[152,"PINAP BERRY"],[256,"PINK SCARF"],[211,"POISON BARB"],[4,"POKÉ BALL"],[80,"POKÉ DOLL"],[153,"POMEG BERRY"],[13,"POTION"],[546,"POWERUP PART"],[71,"PP MAX"],[69,"PP UP"],[12,"PREMIER BALL"],[64,"PROTEIN"],[155,"QUALOT BERRY"],[183,"QUICK CLAW"],[504,"R-DISK"],[161,"RABUTA BERRY"],[68,"RARE CANDY"],[136,"RAWST BERRY"],[148,"RAZZ BERRY"],[41,"RED FLUTE"],[533,"RED ID BADGE"],[254,"RED SCARF"],[48,"RED SHARD"],[9,"REPEAT BALL"],[86,"REPEL"],[33,"REVIVAL HERB"],[24,"REVIVE"],[45,"SACRED ASH"],[5,"SAFARI BALL"],[170,"SALAC BERRY"],[198,"SCOPE LENS"],[220,"SEA INCENSE"],[210,"SHARP BEAK"],[219,"SHELL BELL"],[46,"SHOAL SALT"],[47,"SHOAL SHELL"],[217,"SILK SCARF"],[188,"SILVERPOWDER"],[142,"SITRUS BERRY"],[502,"SMALL TABLET"],[194,"SMOKE BALL"],[27,"SODA POP"],[203,"SOFT SAND"],[184,"SOOTHE BELL"],[191,"SOUL DEW"],[213,"SPELL TAG"],[163,"SPELON BERRY"],[109,"STAR PIECE"],[108,"STARDUST"],[174,"STARF BERRY"],[531,"STEEL TEETH"],[225,"STICK"],[508,"SUBWAY KEY"],[93,"SUN STONE"],[22,"SUPER POTION"],[83,"SUPER REPEL"],[158,"TAMATO BERRY"],[224,"THICK CLUB"],[96,"THUNDERSTONE"],[537,"TIME FLUTE"],[10,"TIMER BALL"],[103,"TINYMUSHROOM"],[289,"TM01"],[290,"TM02"],[291,"TM03"],[292,"TM04"],[293,"TM05"],[294,"TM06"],[295,"TM07"],[296,"TM08"],[297,"TM09"],[298,"TM10"],[299,"TM11"],[300,"TM12"],[301,"TM13"],[302,"TM14"],[303,"TM15"],[304,"TM16"],[305,"TM17"],[306,"TM18"],[307,"TM19"],[308,"TM20"],[309,"TM21"],[310,"TM22"],[311,"TM23"],[312,"TM24"],[313,"TM25"],[314,"TM26"],[315,"TM27"],[316,"TM28"],[317,"TM29"],[318,"TM30"],[319,"TM31"],[320,"TM32"],[321,"TM33"],[322,"TM34"],[323,"TM35"],[324,"TM36"],[325,"TM37"],[326,"TM38"],[327,"TM39"],[328,"TM40"],[329,"TM41"],[330,"TM42"],[331,"TM43"],[332,"TM44"],[333,"TM45"],[334,"TM46"],[335,"TM47"],[336,"TM48"],[337,"TM49"],[338,"TM50"],[214,"TWISTEDSPOON"],[507,"U-DISK"],[2,"ULTRA BALL"],[218,"UP-GRADE"],[545,"VIVID SCENT"],[97,"WATER STONE"],[165,"WATMEL BERRY"],[151,"WEPEAR BERRY"],[43,"WHITE FLUTE"],[180,"WHITE HERB"],[144,"WIKI BERRY"],[78,"X ACCURACY"],[75,"X ATTACK"],[76,"X DEFEND"],[79,"X SPECIAL"],[77,"X SPEED"],[40,"YELLOW FLUTE"],[258,"YELLOW SCARF"],[50,"YELLOW SHARD"],[536,"YLW ID BADGE"],[70,"ZINC"]],"genders":[[0,"Male"],[1,"Female"],[2,"Genderless"]],"natures":[[3,"Adamant"],[18,"Bashful"],[5,"Bold"],[2,"Brave"],[20,"Calm"],[23,"Careful"],[6,"Docile"],[21,"Gentle"],[0,"Hardy"],[11,"Hasty"],[8,"Impish"],[13,"Jolly"],[9,"Lax"],[1,"Lonely"],[16,"Mild"],[15,"Modest"],[14,"Naive"],[4,"Naughty"],[17,"Quiet"],[24,"Quirky"],[19,"Rash"],[7,"Relaxed"],[22,"Sassy"],[12,"Serious"],[10,"Timid"]],"models":[[43,"Athlete Female"],[44,"Athlete Male"],[56,"Bandana Guy"],[32,"Bodybuilder Female"],[33,"Bodybuilder Male 1"],[59,"Bodybuilder Male 2"],[60,"Bodybuilder Male 3"],[61,"Bodybuilder Male 4"],[46,"Chaser Female 1"],[75,"Chaser Female 2"],[47,"Chaser Male 1"],[62,"Chaser Male 2"],[74,"Chaser Male 3"],[4,"Cipher Peon Female"],[5,"Cipher Peon Male 1"],[6,"Cipher Peon Male 2"],[7,"Cipher Peon Male 3"],[8,"Cipher Peon Male 4"],[9,"Cipher Peon Male 5"],[69,"Cipher Peon Male 6"],[54,"Cooltrainer Female"],[53,"Cooltrainer Male"],[13,"Dakim"],[20,"Eagun 1"],[63,"Eagun 2"],[64,"Eagun 3"],[45,"Ein"],[41,"Evice"],[12,"Fun Old Lady"],[31,"Fun Old Man"],[3,"GBA Trainer Female 1"],[10,"GBA Trainer Female 2"],[2,"GBA Trainer Male 1"],[11,"GBA Trainer Male 2"],[30,"Glasses Man"],[14,"Gonzap"],[35,"Guy"],[25,"Hunter Female 1"],[26,"Hunter Female 2"],[58,"Hunter Female 3"],[27,"Hunter Male 1"],[28,"Hunter Male 2"],[73,"Hunter Male 3"],[36,"Lady 1"],[52,"Lady 2"],[29,"Lady In Suit"],[15,"Miror B."],[17,"Nascour"],[18,"Newscaster"],[24,"Pre Gym Trainer Female"],[65,"Pre Gym Trainer Female 2"],[21,"Pre Gym Trainer Male 1"],[22,"Pre Gym Trainer Male 2"],[23,"Pre Gym Trainer Male 3"],[55,"Pre Gym Trainer Male 4"],[70,"Pre Gym Trainer Male 5"],[71,"Pre Gym Trainer Male 6"],[72,"Pre Gym Trainer Male 7"],[57,"Researcher"],[34,"Rich Boy 1"],[51,"Rich Boy 2"],[37,"Rider Female"],[38,"Rider Male 1"],[39,"Rider Male 2"],[48,"Roller Boy"],[50,"Rui"],[66,"Shady Guy"],[19,"St. Performer"],[40,"Teacher"],[42,"Team Snagem 1"],[67,"Team Snagem 2"],[68,"Team Snagem 3"],[16,"Venus"],[1,"Wes"],[49,"Worker"]]}</script>
+<script id="reference-bin" type="application/octet-stream-b64">AAAAAAEDAQsBADCzMO0wtzCiMOAwqzD8MMkzfAAAAAAAAAAAAwAEADCEMFUwVzBEAAAAAAAAAAAwdTBkMEYAAAAAAAAAAAAAMGYwVDCPMEQAAAAAAAAAAAMEBQABAgMEBQYHCABrACIAJB4ZIAD/CjAMMEIwkzBfMG4wADCmMO8wtTCSMAD//wSAXv//BTBN//8GMEQwZv//ATDQMMgw6zBXMGswAP//BGdl//8FME3//wYwXzBc/wH//wIAAAAAAAAAAAAAAAAAAP8KMAwwojDzML8wAP//BF83//8FMGQwiP//BjBEMJMwYDBjMGb/H///ATBCMF8wVzBoMAAw0DDIMOswiP8B//8CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wowDP//KzBgMGr/Af//ATDQMMgw6zBg/wEwADDQMMgw6zBg/wH//wIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAw3DDHMLkwDDCIMEowADBpMEYwVzBf/wH//wEwgjBG/xH//wRW3v//BTBLMET//wYwADCEMIswkzBgMI3/H///AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADDbMOswDDBCMIkwADB+MF8wADDQMMgw6zBZMIswbv8f//8CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMO8w/DDQMPMwDDB7MPwwYzB7MGMwe/8B//8BMIIwRjBEMGMwYTCHMAAwhDCLMEswRP8f//8CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAw3DDHMLkwDDCPMFYwjzBWMAAwhDCJMIwwa///Af//BGdl//8FME3//wYwYTB+MGMwXzAAMH8wXzBEMGD/Af//AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADDbMOswDDCEMIswWDCDMGowRDBu/wH//wIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMO8w/DDQMPMwDP//BF83//8FMGQwiP//BjBEMGgwADCmMO8wtTBrMGowYzBmMF8wTP//ATBTMJMwajBrMAAwhDCLMGgwb/8B//8CAAAAAAAAAAAAAAAAAAAAAAAAAABOAEkARQBOAEEAAAEAAQIDAAAAAAAAAAAAAAAAAAABAAYAFCgAAAAATgBJAEUATgBBAAABBAUGBwAAAAAAAAAAAAAAAAAAAQA2ABQoAAAAAE4ASQBFAE4AQQAAAQgJCgsAAAAAAAAAAAAAAAAAAAEANwAUKAAAAABHAFIARQBHAE8AAAAMDQ4PAAAAAAAAAAAAAAAAAAABADgD6BcAAAAARwBSAEUARwBPAAAAEBESEwAAAAAAAAAAAAAAAAAAAQA5A+gXAAAAAEcAUgBFAEcATwAAABQVFhcAAAAAAAAAAAAAAAAAAAEAOgPoFwAAADDcMMcwuQAAAAAAAAAYGRobAAAAAAAAAAAAAAAAAAABADsD6C8AAAAw2zDrAAAAAAAAAAABHB0eHwAAAAAAAAAAAAAAAAAAAQA8A+g6AAAAMO8w/DDQMPMAAAAAACAhIiMAAAAAAAAAAAAAAAAAAAEAPQPoIQAAAAEtACgAqgCaAL0BPgAAAAwPGBAaFwAAAAB4AAAAAAC0AAAAAAAXAgMAAAFkACkAiAD8AOIAXQAAABAWDw8YEwAAAAAAAIwAAACgAAAAAAEIAAEAAADYACoAnACjAHoAKwAAABcWFw8aDwAAAADIAGQAAAAAAAAAAAADAwIAAABCACoAdABFARcAnQAAABUXEhEUEwAAAADIAAAAAABkAAAAAAEDAwIAAAEuADMAaAAOAOIBPgAAAAwPGBAaFwAAAACqAAAAAADmAAAAAAAXAgMAAAC+ADIBIQBoAOIAYQAAABAWDw8YEwAAAAAAAL4AAADSAAAAAAEIAAEAAAEvADMBPgAOAPcAWwCNAAwPGBAaFwAAAACqAAAAAADIAB4AAAIDAwIAAABDADAAWQDuAEUAnQAAABUXEhEUEwAAAAD6AAAAAACWAAAAAAEDAwIAAAEuADsADgC2AOIBPgCoAAwPGBAaFwAAAAD8AAAAAAD8AAYAAAAXAgMAAAFlADsBUwD8AOIBGACqABAWDw8YEwAAAAAAAPwAAAD8AAYAAAEIAAEAAADZADwAWQDaAO0BGADbABcWFw8aDwAAAAD8APwAAAAAAAYAAAADAwIAAABEADwAWQDuAQcAnQDdABUXEhEUEwAAAAD8AAAAAAD8AAYAAAEDAwIAAAFTACsA3gDxAIUAJACJABUYEBkODAAAAADIAAAAyAAAAAAAAAENAgIAAAC7ACsBDgBJAOMA6wCIABAODxUTEgAAAAAAAMgAAADIAAAAAAEFAAMAAADkACsANQAuACwAKwCHAQ8SEBoSGAAAAAAAAAAAyAAAAMgAAAAKAAIAAAEqACsAmQELAPEA6wCLABMaERYOEgAAAADIAAAAZAAAAGQAAAACAQIAAAFUADMAWQDxAJ0BHACoABUYEBkODAAAAAD8AAAA/AAAAAYAAAENAgIAAAC8ADMBDgBPAOMAygCpABAODxUTEgAAAAAAAPwAAAD8AAYAAAEFAAMAAADlADMAfgAuACwAtgCrAQ8SEBoSGAAABgAAAAAA/AAAAPwAAAAKAAIAAAErADMAmQFGAPEA/ACsABMaERYOEgAAAAD8AAAAgQAAAIEAAAACAQIAAAD0ADwAfgDxAEwAtgCNABsaFxMRGAAABgAAAAAA/AAAAPwAAAIKAgIAAAC9ADwBDgBPALYA8QCzABAODxUTEgAAAAAAAPwAAAD8AAYAAAEFAAMAAADlADwBOwBMAPIAtgDdAQ8SEBoSGAAABgAAAAAA/AAAAPwAAAAKAAIAAAEsADwAmQBMAPcA/ADZABMaERYOEgAAAAD8AAAAgQAAAIEAAAACAgIAAAFCACgAqABtAPwBNgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXAAEAAABYACkAMgEDAK4BXwAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAEAAAFvACgAigEZAIUAvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAEAAACvRBQAdgDMALoBGQAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAEWAAFGAAE7ADMAzAE5AVcALwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEAAMAAADTADMBNgC/ANUBYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEKAAEAAAFpADIAbQE2AGUBBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEMAAEAAACzRSUAVwBUAFYAsgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQAAJGAADGADwA5ABcAUwA9wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAENAAEAAAE/ADwAWQBeAR0AcQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAAEAAADQADwAyQDyAT0AXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEAAADURjIA0gDoAA4AowAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALAAFkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</script>
+<script>(function (root) {
+'use strict';
+function hexBytes(text) {
+var parts = text.trim().split(/\s+/), out = new Uint8Array(parts.length);
+for (var i = 0; i < parts.length; i++) out[i] = parseInt(parts[i], 16);
+return out;
+}
+var HEADER = hexBytes(
+'00 30 01 02 00 01 08 10 00 00 10 12 F0 D2 01 00 00 04 10 00 00 19 00 00 ' +
+'00 08 4E 49 4E 54 45 4E 44 4F 00 22 00 09 22 90 0F 02 02 00 00 00 00 00 ' +
+'83 7C 83 50 83 82 83 93 83 52 83 8D 83 56 83 41 83 80 00 00 00 00 00 00 ' +
+'00 00 00 00 00 00 00 00 00'
+);
+var STADIUM_HEADER = HEADER.slice();
+STADIUM_HEADER[0x10] = 0x60;
+STADIUM_HEADER[0x27] = 0x40;
+STADIUM_HEADER[0x28] = 0x00;
+var META = [
+[0,4,4,1,0],[1,3,1,1,4],[2,2,1,1,5],[3,4,1,1,6],[4,4,1,1,7],[5,8,1,1,8],
+[6,192,24,1,10],[7,3,1,1,36],[8,3,1,1,37],[9,3,1,1,38],[10,112,14,1,40],
+[11,112,14,1,56],[12,112,14,1,72],[13,2,1,1,88],[14,3,1,1,89],[15,3,1,1,90],
+[16,4,1,1,91],[17,4,1,1,92],[18,4,1,1,93],[19,4,1,1,94],[20,4,1,1,95],
+[21,4,1,1,96],[22,4,1,1,97],[23,4,1,1,98],[24,4,1,1,99],[25,10,2,1,100],
+[26,10,2,1,102],[27,10,2,1,104],[28,7,1,1,106],[29,7,1,1,107],[30,7,1,1,108],
+[31,720,90,1,110],[34,720,90,1,386],[37,720,90,1,662],[32,720,90,1,202],
+[35,720,90,1,478],[38,720,90,1,754],[33,720,90,1,294],[36,720,90,1,570],
+[39,720,90,1,846]
+];
+var TRAINER = [
+[40,80,10,1,0],[41,1,1,1,12],[42,6,1,4,13],[43,10,2,4,20],
+[44,1,4,1,28],[45,14,2,1,32],[46,10,2,1,34],[47,7,1,1,36]
+];
+var POKEMON = [
+[48,9,2,1,0],[49,7,1,1,2],[50,7,1,1,3],[51,10,2,4,4],[52,11,2,1,12],
+[53,2,1,1,14],[54,6,1,1,15],[55,6,1,1,16],[56,6,1,1,17],[57,6,1,1,18],
+[58,6,1,1,19],[59,6,1,1,20],[60,9,2,1,22],[61,9,2,1,24],[62,9,2,1,26],
+[63,9,2,1,28],[64,9,2,1,30],[65,9,2,1,32],[66,9,1,1,34],[67,2,1,1,36],
+[68,6,1,1,37],[69,3,1,1,38],[70,6,1,1,39],[71,8,1,1,40]
+];
+function BitWriter() { this.bytes = []; this.current = 0; this.position = 7; }
+BitWriter.prototype.bit = function (value) {
+this.current |= (value & 1) << this.position;
+if (this.position === 0) { this.bytes.push(this.current); this.current = 0; this.position = 7; }
+else this.position--;
+};
+BitWriter.prototype.value = function (value, bits) {
+for (var shift = bits - 1; shift >= 0; shift--) this.bit(Math.floor(value / Math.pow(2, shift)) & 1);
+};
+BitWriter.prototype.raw = function (bytes, bits) {
+var skip = bytes.length * 8 - bits;
+for (var bit = skip; bit < bytes.length * 8; bit++)
+this.bit((bytes[bit >> 3] >> (7 - (bit & 7))) & 1);
+};
+BitWriter.prototype.finish = function () {
+if (this.position !== 7) this.bytes.push(this.current);
+return new Uint8Array(this.bytes);
+};
+function BitReader(bytes, byteOffset) {
+this.bytes = bytes;
+this.position = byteOffset * 8;
+}
+BitReader.prototype.bit = function () {
+if (this.position >= this.bytes.length * 8) throw new Error('Encoded card data ended unexpectedly.');
+var value = (this.bytes[this.position >> 3] >> (7 - (this.position & 7))) & 1;
+this.position++;
+return value;
+};
+BitReader.prototype.value = function (bits) {
+var value = 0;
+for (var i = 0; i < bits; i++) value = value * 2 + this.bit();
+return value;
+};
+BitReader.prototype.raw = function (width, bits) {
+var out = new Uint8Array(width), skip = width * 8 - bits;
+for (var bit = skip; bit < width * 8; bit++) {
+if (this.bit()) out[bit >> 3] |= 1 << (7 - (bit & 7));
+}
+return out;
+};
+function transformed(id) {
+return id === 7 || id === 9 || (id >= 16 && id <= 24) || id === 42 || id === 68 || id === 67 || id === 41;
+}
+function writeFields(writer, decoded, defs, sectionStart, sectionStride, entry) {
+for (var n = 0; n < defs.length; n++) {
+var f = defs[n];
+for (var a = 0; a < f[3]; a++) {
+var off = sectionStart + entry * sectionStride + f[4] + a * f[2];
+var raw = decoded.slice(off, off + f[2]);
+if (transformed(f[0])) {
+var value = 0;
+for (var b = 0; b < raw.length; b++) value = value * 256 + raw[b];
+if (f[0] === 41) value = value === 0 ? 1 : 0;
+else value += 1;
+writer.value(value % Math.pow(2, f[1]), f[1]);
+} else writer.raw(raw, f[1]);
+}
+}
+}
+function storeValue(bytes, offset, width, value) {
+for (var i = width - 1; i >= 0; i--) {
+bytes[offset + i] = value & 255;
+value = Math.floor(value / 256);
+}
+}
+function readFields(reader, decoded, defs, sectionStart, sectionStride, entry) {
+for (var n = 0; n < defs.length; n++) {
+var f = defs[n];
+for (var a = 0; a < f[3]; a++) {
+var off = sectionStart + entry * sectionStride + f[4] + a * f[2];
+if (transformed(f[0])) {
+var value = reader.value(f[1]);
+if (f[0] === 41) value = value === 1 ? 0 : 1;
+else value = (value + Math.pow(2, f[1]) - 1) % Math.pow(2, f[1]);
+storeValue(decoded, off, f[2], value);
+} else {
+decoded.set(reader.raw(f[2], f[1]), off);
+}
+}
+}
+}
+function complementSum(values, mask) {
+var total = 0;
+for (var i = 0; i < values.length; i++) total = (total + values[i]) & mask;
+return (~total) & mask;
+}
+function finishEncodedBin(header, payload) {
+var out = new Uint8Array(0x840);
+out.set(header); out.set(payload, header.length);
+var dummy = 0;
+for (var i = header.length + payload.length; i < out.length; i++) { out[i] = dummy; dummy = (dummy + 1) & 255; }
+var halfwords = [];
+for (i = 0x30; i < out.length; i += 2) halfwords.push((out[i] << 8) | out[i + 1]);
+var sum = complementSum(halfwords, 0xFFFF); out[0x13] = sum >> 8; out[0x14] = sum & 255;
+var hx = 0, offsets = [12,13,16,17,38,39,40,41,42,43,44,45];
+for (i = 0; i < offsets.length; i++) hx ^= out[offsets[i]];
+out[0x2E] = hx;
+var totals = [];
+for (i = 0; i < 0x2F; i++) totals.push(out[i]);
+for (var start = 0x30; start < out.length; start += 0x30) {
+var fx = 0;
+for (i = start; i < Math.min(start + 0x30, out.length); i++) fx ^= out[i];
+totals.push(fx);
+}
+out[0x2F] = complementSum(totals, 0xFF);
+return out;
+}
+function isDecodedStadiumCard(decoded) {
+return decoded[0] === 0 && decoded[1] === 0 && decoded[2] === 0 && decoded[3] === 1;
+}
+function matchesEncodedHeader(bin, template) {
+if (!(bin instanceof Uint8Array) || bin.length !== 0x840) return false;
+for (var i = 0; i < template.length; i++) {
+if (i === 0x11 || i === 0x13 || i === 0x14 || i === 0x2E || i === 0x2F) continue;
+if (bin[i] !== template[i]) return false;
+}
+return true;
+}
+function isStadiumEncodedBin(bin) {
+if (!matchesEncodedHeader(bin, HEADER) && !matchesEncodedHeader(bin, STADIUM_HEADER)) return false;
+return (bin[HEADER.length] >> 4) === 1;
+}
+function stadiumVariantFromBin(bin) {
+if (!isStadiumEncodedBin(bin)) return null;
+var variant = bin[0x11] / 4;
+return variant >= 1 && variant <= 4 && variant % 1 === 0 ? variant : null;
+}
+function stadiumHeaderStyleFromBin(bin) {
+if (!isStadiumEncodedBin(bin)) return null;
+return matchesEncodedHeader(bin, STADIUM_HEADER) ? 'stadium' : 'battle';
+}
+function decodedToBin(decoded, stadiumVariant, stadiumHeaderStyle) {
+if (!(decoded instanceof Uint8Array) || decoded.length !== 0xB20)
+throw new Error('Expected exactly 2,848 decoded bytes.');
+if (isDecodedStadiumCard(decoded)) {
+stadiumVariant = Number(stadiumVariant);
+if (stadiumVariant < 1 || stadiumVariant > 4 || stadiumVariant % 1 !== 0) stadiumVariant = 1;
+var stadiumWriter = new BitWriter();
+stadiumWriter.raw(decoded.slice(0, 4), 4);
+stadiumWriter.raw(decoded.slice(0xAFF, 0xB00), 6);
+stadiumWriter.raw(decoded.slice(0xB00, 0xB1E), 240);
+var stadiumHeader = stadiumHeaderStyle === 'battle' ? HEADER.slice() : STADIUM_HEADER.slice();
+stadiumHeader[0x11] = stadiumVariant * 4;
+return finishEncodedBin(stadiumHeader, stadiumWriter.finish());
+}
+if (decoded[0] || decoded[1] || decoded[2] || decoded[3])
+throw new Error('This decoded card type is not supported by the editor.');
+var writer = new BitWriter();
+writeFields(writer, decoded, META, 0, 940, 0);
+for (var t = 0; t < 9; t++) writeFields(writer, decoded, TRAINER, 940, 40, t);
+for (var p = 0; p < 36; p++) writeFields(writer, decoded, POKEMON, 1300, 42, p);
+return finishEncodedBin(HEADER, writer.finish());
+}
+function binToDecoded(bin) {
+if (!(bin instanceof Uint8Array) || bin.length !== 0x840)
+throw new Error('Expected exactly 2,112 encoded BIN bytes.');
+if (isStadiumEncodedBin(bin)) {
+var stadiumReader = new BitReader(bin, STADIUM_HEADER.length);
+var stadiumDecoded = new Uint8Array(0xB20);
+stadiumDecoded.set(stadiumReader.raw(4, 4), 0);
+stadiumDecoded.set(stadiumReader.raw(1, 6), 0xAFF);
+stadiumDecoded.set(stadiumReader.raw(30, 240), 0xB00);
+return stadiumDecoded;
+}
+for (var i = 0; i < HEADER.length; i++) {
+if (i === 0x13 || i === 0x14 || i === 0x2E || i === 0x2F) continue;
+if (bin[i] !== HEADER[i]) throw new Error('The encoded card header is not recognized.');
+}
+var reader = new BitReader(bin, HEADER.length), decoded = new Uint8Array(0xB20);
+readFields(reader, decoded, META, 0, 940, 0);
+for (var t = 0; t < 9; t++) readFields(reader, decoded, TRAINER, 940, 40, t);
+for (var p = 0; p < 36; p++) readFields(reader, decoded, POKEMON, 1300, 42, p);
+return decoded;
+}
+function makeRs() {
+var alpha = new Uint8Array(256), index = new Uint8Array(256), mask = 1;
+alpha[255] = 0; index[0] = 255;
+for (var i = 0; i < 255; i++) {
+alpha[i] = mask; index[mask] = i; mask <<= 1; if (mask >= 256) mask ^= 0x187;
+}
+var gg = new Uint8Array(16); gg[0] = alpha[0x78];
+for (i = 1; i < 16; i++) {
+gg[i] = 1;
+for (var j = i; j >= 0; j--) {
+var y = j === 0 ? 0 : gg[j - 1], x = gg[j];
+if (x !== 0) { x = index[x] + 0x78 + i; if (x >= 255) x -= 255; y ^= alpha[x]; }
+gg[j] = y;
+}
+}
+for (i = 0; i < 16; i++) gg[i] = index[gg[i]];
+return { alpha: alpha, index: index, gg: gg };
+}
+var RS = makeRs();
+function reverse(bytes) {
+for (var i = 0; i < (bytes.length >> 1); i++) {
+var x = bytes[i]; bytes[i] = bytes[bytes.length-i-1]; bytes[bytes.length-i-1] = x;
+}
+}
+function appendErrorInfo(data) {
+reverse(data);
+for (var q = 0; q < 16; q++) data[q] = 0;
+for (var i = 63; i >= 16; i--) {
+var z = RS.index[data[i] ^ data[15]];
+for (var j = 15; j >= 0; j--) {
+var x = j === 0 ? 0 : data[j - 1];
+if (z !== 255 && RS.gg[j] !== 255) {
+var y = RS.gg[j] + z; if (y >= 255) y -= 255; x ^= RS.alpha[y];
+}
+data[j] = x;
+}
+}
+for (q = 0; q < 16; q++) data[q] ^= 255;
+reverse(data);
+}
+function binToRaw(bin) {
+if (!(bin instanceof Uint8Array) || bin.length !== 0x840)
+throw new Error('Expected exactly 2,112 encoded BIN bytes.');
+var longHeader = hexBytes('00 03 00 19 40 10 00 2C 0E 88 ED 82 50 67 FB D1 43 EE 03 C6 C6 2B 2C 93');
+var raw = new Uint8Array(0xB60), interleaved = new Uint8Array(0xB60);
+for (var i = 0; i < 28; i++) for (var j = 0; j < 2; j++) raw[i * 0x68 + j] = longHeader[(i * 2 + j) % 0x18];
+for (var block = 0; block < 0x2C; block++) {
+var data = new Uint8Array(64);
+data.set(bin.slice(block * 0x30, block * 0x30 + 0x30));
+appendErrorInfo(data);
+for (i = 0; i < 64; i++) interleaved[i * 0x2C + block] = data[i];
+}
+var pointer = 0;
+for (i = 2; i < 0xB38; i++) { if (i % 0x68 === 0) i += 2; raw[i] = interleaved[pointer++]; }
+for (i = 0xB38; i < 0xB60; i++) raw[i] = i & 255;
+return raw;
+}
+function rawToBin(raw, relaxedHeader) {
+if (!(raw instanceof Uint8Array) || raw.length !== 0xB60)
+throw new Error('Expected exactly 2,912 RAW bytes.');
+var longHeader = hexBytes('00 03 00 19 40 10 00 2C 0E 88 ED 82 50 67 FB D1 43 EE 03 C6 C6 2B 2C 93');
+for (var row = 0; row < 28; row++) {
+for (var h = 0; h < 2; h++) {
+if (!relaxedHeader && raw[row * 0x68 + h] !== longHeader[(row * 2 + h) % longHeader.length])
+throw new Error('The RAW card header is not recognized.');
+}
+}
+var interleaved = new Uint8Array(64 * 0x2C), pointer = 0;
+for (var i = 2; i < 0xB38; i++) {
+if (i % 0x68 === 0) i += 2;
+interleaved[pointer++] = raw[i];
+}
+var bin = new Uint8Array(0x840);
+for (var block = 0; block < 0x2C; block++) {
+for (i = 0; i < 0x30; i++) bin[block * 0x30 + i] = interleaved[i * 0x2C + block];
+}
+return bin;
+}
+function decodedToRaw(decoded, stadiumVariant, stadiumHeaderStyle) {
+return binToRaw(decodedToBin(decoded, stadiumVariant, stadiumHeaderStyle));
+}
+function rawToDecoded(raw) { return binToDecoded(rawToBin(raw)); }
+root.ECardCodec = {
+decodedToBin: decodedToBin,
+binToDecoded: binToDecoded,
+binToRaw: binToRaw,
+rawToBin: rawToBin,
+stadiumVariantFromBin: stadiumVariantFromBin,
+stadiumHeaderStyleFromBin: stadiumHeaderStyleFromBin,
+decodedToRaw: decodedToRaw,
+rawToDecoded: rawToDecoded
+};
+})(typeof window !== 'undefined' ? window : globalThis);</script>
+<script>(function () {
+'use strict';
+var LOOKUP=JSON.parse(document.getElementById('lookup-data').textContent);Object.keys(LOOKUP).forEach(function(key){LOOKUP[key]=LOOKUP[key].map(function(entry){return{value:entry[0],label:entry[1]};});});
+var REFERENCE_B64 = document.getElementById('reference-bin').textContent.trim();
+function b64ToBytes(b64) {
+var bin = atob(b64);
+var arr = new Uint8Array(bin.length);
+for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+return arr;
+}
+var REFERENCE_BYTES = b64ToBytes(REFERENCE_B64);
+var EXPECTED_LENGTH = REFERENCE_BYTES.length; // 2848
+var CHECK_START = 0, CHECK_END = 7;
+var SLOT_BASE = 0x514;
+var SLOT_STRIDE = 0x2A; // 42
+var SLOT_COUNT = 36;
+var NAME_MAX_CHARS = 5;
+var PANEL_SLOT_OFFSET = 0x08;
+var CARD_ID_OFFSET = 0x24;
+var PANEL_COLOUR_OFFSET = 0x25;
+var PANEL_COLOURS = [
+{ value: 0x00, label: 'Green' },
+{ value: 0x01, label: 'Sky Blue' },
+{ value: 0x02, label: 'Blue' },
+{ value: 0x03, label: 'Pink' },
+{ value: 0x04, label: 'Red' },
+{ value: 0x05, label: 'Yellow' },
+{ value: 0x06, label: 'Light Green' },
+{ value: 0x07, label: 'Gray' },
+];
+var CARD_NUMBER_OFFSETS = [0x3CF, 0x3F7, 0x41F];
+var CARD_TITLE_OFFSET = 0x0A;
+var CARD_TITLE_MAX_CHARS = 12;
+var CARD_TITLE_SYMBOL_CODE = 0x337C;
+var CARD_TEXT_LABELS = [
+{ id: 'cardText28', offset: 0x28, maxChars: 7 },
+{ id: 'cardText38', offset: 0x38, maxChars: 7 },
+{ id: 'cardText48', offset: 0x48, maxChars: 7 },
+];
+var CARD_DIALOGUE_OFFSETS = [0x6E, 0xCA, 0x126, 0x182, 0x1DE, 0x23A, 0x296, 0x2F2, 0x34E];
+var CARD_DIALOGUE_TEAMS = [7, 8, 9, 7, 8, 9, 7, 8, 9];
+var CARD_DIALOGUE_TITLES = ['Pre-Battle Dialogue', 'Rematch Dialogue', 'Defeat Dialogue'];
+var CARD_DIALOGUE_BYTE_LEN = 0x5C;
+var STADIUM_ID_OFFSET = 0xAFF;
+var STADIUM_NAME_OFFSET = 0xB00;
+var STADIUM_NAME_MAX_CHARS = 15;
+var BATTLEFIELDS = [
+{ value: 0x0E, label: 'Agate Village' },
+{ value: 0x15, label: 'Cipher Lab' },
+{ value: 0x14, label: 'Cipher Lab Outside' },
+{ value: 0x24, label: 'Deep Colosseum' },
+{ value: 0x08, label: 'Mayor\u2019s House' },
+{ value: 0x18, label: 'Mt. Battle Areas 1-3' },
+{ value: 0x19, label: 'Mt. Battle Areas 4-6' },
+{ value: 0x1A, label: 'Mt. Battle Areas 7-10' },
+{ value: 0x17, label: 'Mt. Battle Lobby' },
+{ value: 0x16, label: 'Mt. Battle Outside' },
+{ value: 0x25, label: 'Mt. Battle Peak' },
+{ value: 0x05, label: 'Outskirt Stand' },
+{ value: 0x07, label: 'Phenac City' },
+{ value: 0x21, label: 'Phenac Colosseum' },
+{ value: 0x09, label: 'Pre Gym' },
+{ value: 0x0B, label: 'Pyrite Bldg' },
+{ value: 0x0C, label: 'Pyrite Cave' },
+{ value: 0x22, label: 'Pyrite Colosseum' },
+{ value: 0x0A, label: 'Pyrite Town' },
+{ value: 0x1F, label: 'Realgamtwr 2F' },
+{ value: 0x1D, label: 'Realgamtwr Casino' },
+{ value: 0x1B, label: 'Realgamtwr Dome' },
+{ value: 0x1C, label: 'Realgamtwr Lobby' },
+{ value: 0x1E, label: 'Realgamtwr Restaurant' },
+{ value: 0x20, label: 'Realgamtwr Room' },
+{ value: 0x0F, label: 'Relic Cave' },
+{ value: 0x10, label: 'Relic Forest' },
+{ value: 0x27, label: 'Snagem Hideout' },
+{ value: 0x11, label: 'The Under' },
+{ value: 0x13, label: 'The Under Subway' },
+{ value: 0x26, label: 'Tower Colosseum' },
+{ value: 0x12, label: 'TV Studio' },
+{ value: 0x23, label: 'Under Colosseum' }
+];
+var BATTLEFIELD_ID_ALIASES = {
+0x01: 0x22,
+0x02: 0x22,
+0x03: 0x22,
+0x04: 0x22,
+0x06: 0x22,
+0x0D: 0x0C,
+0x28: 0x18,
+0x29: 0x19,
+0x2A: 0x1A,
+0x2B: 0x21,
+0x2C: 0x22,
+0x2D: 0x23,
+0x2E: 0x25,
+0x2F: 0x26,
+0x30: 0x26,
+0x31: 0x15
+};
+var CARD_ID_BYTES = [];
+for (var cardNum = 1; cardNum <= 20; cardNum++) {
+var cardGroup = Math.floor((cardNum - 1) / 5);
+var cardIndex = (cardNum - 1) % 5;
+var groupPairs = [[0x00, 0x04], [0x01, 0x02], [0x02, 0x05], [0x03, 0x00]];
+CARD_ID_BYTES.push([groupPairs[cardGroup][0], groupPairs[cardGroup][1], cardIndex]);
+}
+var TEAM_GROUPS = [
+{ key: 'vr', label: 'VR', teams: [1, 2, 3], slots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+offsets: [0x3AD, 0x3D5, 0x3FD], endian: 'le', maxChars: 5 },
+{ key: 'bonus', label: 'Bonus', teams: [4, 5, 6], slots: [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+offsets: [0x424, 0x44C, 0x474], endian: 'be', maxChars: 5 },
+{ key: 'team7', label: 'Team 7', teams: [7], slots: [24, 25, 26, 27],
+offsets: [0x49C], endian: 'be', maxChars: 5 },
+{ key: 'team8', label: 'Team 8', teams: [8], slots: [28, 29, 30, 31],
+offsets: [0x4C4], endian: 'be', maxChars: 5 },
+{ key: 'team9', label: 'Team 9', teams: [9], slots: [32, 33, 34, 35],
+offsets: [0x4EC], endian: 'be', maxChars: 5 },
+];
+var SLOT_TEAM = {};
+var TEAM_SLOTS = {};
+var TEAM_LIST = [];
+TEAM_GROUPS.forEach(function (g) {
+g.teams.forEach(function (teamNum, i) {
+var teamSlots = g.slots.slice(i * 4, i * 4 + 4);
+teamSlots.forEach(function (slotIdx) { SLOT_TEAM[slotIdx] = teamNum; });
+TEAM_SLOTS[teamNum] = teamSlots;
+TEAM_LIST.push({ teamNum: teamNum, ownerLabel: g.label, groupKey: g.key });
+});
+});
+var SLOT_FIELDS = {
+species:   { off: 0,  width: 2, endian: 'be' },
+shadowId:  { off: 2,  width: 1 },
+level:     { off: 3,  width: 1 },
+move1:     { off: 4,  width: 2, endian: 'be' },
+move2:     { off: 6,  width: 2, endian: 'be' },
+move3:     { off: 8,  width: 2, endian: 'be' },
+move4:     { off: 10, width: 2, endian: 'be' },
+item:      { off: 12, width: 2, endian: 'be' },
+ability:   { off: 14, width: 1 },
+ivHP:      { off: 15, width: 1 },
+ivAtk:     { off: 16, width: 1 },
+ivDef:     { off: 17, width: 1 },
+ivSpA:     { off: 18, width: 1 },
+ivSpD:     { off: 19, width: 1 },
+ivSpe:     { off: 20, width: 1 },
+evHP:      { off: 23, width: 2, endian: 'le' }, // stored as (value, 0x00)
+evAtk:     { off: 25, width: 2, endian: 'le' },
+evDef:     { off: 27, width: 2, endian: 'le' },
+evSpA:     { off: 29, width: 2, endian: 'le' },
+evSpD:     { off: 31, width: 2, endian: 'le' },
+evSpe:     { off: 33, width: 2, endian: 'le' },
+happiness: { off: 35, width: 1 },
+gender:    { off: 36, width: 1 },
+nature:    { off: 37, width: 1 },
+heartGauge:{ off: 40, width: 2, endian: 'le' },
+};
+var FIELD_MAX = {
+level: 100, shadowId: 96, ability: 1, happiness: 255,
+heartGauge: 255,
+ivHP: 31, ivAtk: 31, ivDef: 31, ivSpA: 31, ivSpD: 31, ivSpe: 31,
+evHP: 255, evAtk: 255, evDef: 255, evSpA: 255, evSpD: 255, evSpe: 255,
+};
+var TRAINER_RECORD_BASE = 0x3A9;
+var TRAINER_RECORD_STRIDE = 0x28;
+var TRAINER_RECORD_COUNT = 9;
+var TRAINER_FIELDS = {
+gender:    { off: 0x0F, width: 1 },
+item1:     { off: 0x14, width: 2, endian: 'be' },
+item2:     { off: 0x16, width: 2, endian: 'be' },
+item3:     { off: 0x18, width: 2, endian: 'be' },
+item4:     { off: 0x1A, width: 2, endian: 'be' },
+aiIndex:   { off: 0x23, width: 2, endian: 'be' },
+trainerId: { off: 0x25, width: 2, endian: 'be' },
+modelId:   { off: 0x27, width: 1 },
+};
+var TRAINER_CLASSES = [
+{ value: 0, label: 'NONE' },
+{ value: 20, label: 'AREA LEADER' },
+{ value: 17, label: 'ATHLETE' },
+{ value: 29, label: 'BANDANA GUY' },
+{ value: 32, label: 'BODYBUILDER' },
+{ value: 30, label: 'CHASER' },
+{ value: 5, label: 'CIPHER' },
+{ value: 4, label: 'CIPHER ADMIN' },
+{ value: 6, label: 'CIPHER HEAD' },
+{ value: 36, label: 'CIPHER PEON' },
+{ value: 18, label: 'COOLTRAINER' },
+{ value: 33, label: 'DEEP KING' },
+{ value: 16, label: 'FUN OLD LADY' },
+{ value: 15, label: 'FUN OLD MAN' },
+{ value: 11, label: 'GLASSES MAN' },
+{ value: 13, label: 'GUY' },
+{ value: 25, label: 'HUNTER' },
+{ value: 10, label: 'LADY' },
+{ value: 12, label: 'LADY IN SUIT' },
+{ value: 24, label: 'MIROR B.PEON' },
+{ value: 8, label: 'MT.BTLMASTER' },
+{ value: 37, label: 'MYSTERY TROOP' },
+{ value: 7, label: 'MYTH TRAINER' },
+{ value: 34, label: 'NEWS CASTER' },
+{ value: 19, label: 'PREGYMLEADER' },
+{ value: 31, label: 'RESEARCHER' },
+{ value: 9, label: 'RICH BOY' },
+{ value: 26, label: 'RIDER' },
+{ value: 40, label: 'ROGUE' },
+{ value: 27, label: 'ROLLER BOY' },
+{ value: 39, label: 'SHADY GUY' },
+{ value: 23, label: 'SNAGEM HEAD' },
+{ value: 28, label: 'ST.PERFORMER' },
+{ value: 21, label: 'SUPERTRAINER' },
+{ value: 14, label: 'TEACHER' },
+{ value: 35, label: 'TEAM SNAGEM' },
+{ value: 38, label: 'VR TRAINER' },
+{ value: 22, label: 'WORKER' },
+];
+var BONUS_REWARD_ITEMS = {
+bonus0: { off: 0x64, width: 2, endian: 'be' },
+bonus1: { off: 0x66, width: 2, endian: 'be' },
+bonus2: { off: 0x68, width: 2, endian: 'be' },
+};
+var PROMO_BONUS_REWARD_ITEM = { off: 0x69, width: 1 };
+var SHADOW_TRAINER_CLASSES = {
+team7: { off: 0x6A, width: 1 },
+team8: { off: 0x6B, width: 1 },
+team9: { off: 0x6C, width: 1 },
+};
+function trainerClassDefFor(key) {
+return SHADOW_TRAINER_CLASSES[key] || null;
+}
+function bonusRewardDefFor(key) {
+if (state.cardProfile === 'promo') return key === 'bonus0' ? PROMO_BONUS_REWARD_ITEM : null;
+return BONUS_REWARD_ITEMS[key] || null;
+}
+function trainerRecordBase(idx) { return TRAINER_RECORD_BASE + idx * TRAINER_RECORD_STRIDE; }
+var TRAINER_RECORD_INDEX = { vr: [0, 1, 2], bonus: [3, 4, 5], team7: [6], team8: [7], team9: [8] };
+var state = {
+bytes: null,          // Uint8Array, working copy
+originalBytes: null,  // Uint8Array, as-uploaded (for diff / reset)
+loaded: false,
+currentCardNumber: null,
+cardProfile: 'regular',
+stadiumVariant: 1,
+stadiumHeaderStyle: 'battle',
+currentTeam: 1,
+currentSlot: 0,
+};
+var $ = function (id) { return document.getElementById(id); };
+var dropzone = $('dropzone');
+var fileInput = $('fileInput');
+var createNewBtn = $('createNewBtn');
+var statusArea = $('statusArea');
+var cardBody = $('cardBody');
+var stadiumBody = $('stadiumBody');
+var panelSlotInput = $('panelSlotInput');
+var cardNumberField = $('cardNumberField');
+var cardNumberSelect = $('cardNumberSelect');
+var cardIdPreview = $('cardIdPreview');
+var panelColourField = $('panelColourField');
+var panelColourSelect = $('panelColourSelect');
+var battlefieldSelect = $('battlefieldSelect');
+var battlefieldNameInput = $('battlefieldName');
+var textBody = $('textBody');
+var cardTitleInput = $('cardTitle0A');
+var cardTextLabelEls = [];
+var cardDialogueEls = [];
+var nameBody = $('nameBody');
+var dialogueTextGrids = {
+7: document.querySelector('#shadowDialogue7 .text-grid'),
+8: document.querySelector('#shadowDialogue8 .text-grid'),
+9: document.querySelector('#shadowDialogue9 .text-grid'),
+};
+var trainerNameEls = {
+vr: [
+{ input: $('vrInput1'), offset: 0x3AD, maxChars: 5, endian: 'le' },
+{ input: $('vrInput2'), offset: 0x3D5, maxChars: 5, endian: 'le' },
+{ input: $('vrInput3'), offset: 0x3FD, maxChars: 5, endian: 'le' },
+],
+bonus: [
+{ input: $('bonusInput1'), offset: 0x424, maxChars: 5, endian: 'be' },
+{ input: $('bonusInput2'), offset: 0x44C, maxChars: 5, endian: 'be' },
+{ input: $('bonusInput3'), offset: 0x474, maxChars: 5, endian: 'be' },
+],
+};
+var teamNameEls = {
+team7: { input: $('team7Input') },
+team8: { input: $('team8Input') },
+team9: { input: $('team9Input') },
+};
+var TRAINER_ATTR_KEYS = [
+{ key: 'vr0', recordIdx: 0 }, { key: 'vr1', recordIdx: 1 }, { key: 'vr2', recordIdx: 2 },
+{ key: 'bonus0', recordIdx: 3 }, { key: 'bonus1', recordIdx: 4 }, { key: 'bonus2', recordIdx: 5 },
+{ key: 'team7', recordIdx: 6 }, { key: 'team8', recordIdx: 7 }, { key: 'team9', recordIdx: 8 },
+];
+var trainerAttrEls = {};
+var slotBody = $('slotBody');
+var teamSelect = $('teamSelect');
+var slotSelect = $('slotSelect');
+var slotPrev = $('slotPrev');
+var slotNext = $('slotNext');
+var changedStrip = $('changedStrip');
+var exportBody = $('exportBody');
+var downloadBtn = $('downloadBtn');
+var rawDownloadBtn = $('rawDownloadBtn');
+var resetBtn = $('resetBtn');
+var fieldEls = {
+species: $('f_species'), level: $('f_level'), shadowId: $('f_shadow'),
+gender: $('f_gender'), nature: $('f_nature'), item: $('f_item'),
+ability: $('f_ability'), happiness: $('f_happiness'), heartGauge: $('f_heart'),
+move1: $('f_move1'), move2: $('f_move2'), move3: $('f_move3'), move4: $('f_move4'),
+ivHP: $('f_ivHP'), ivAtk: $('f_ivAtk'), ivDef: $('f_ivDef'),
+ivSpA: $('f_ivSpA'), ivSpD: $('f_ivSpD'), ivSpe: $('f_ivSpe'),
+evHP: $('f_evHP'), evAtk: $('f_evAtk'), evDef: $('f_evDef'),
+evSpA: $('f_evSpA'), evSpD: $('f_evSpD'), evSpe: $('f_evSpe'),
+};
+function readField(bytes, baseOff, def) {
+var o = baseOff + def.off;
+if (def.width === 1) return bytes[o];
+if (def.endian === 'be') return (bytes[o] << 8) | bytes[o + 1];
+return bytes[o] | (bytes[o + 1] << 8);
+}
+function writeField(bytes, baseOff, def, value) {
+var o = baseOff + def.off;
+value = value | 0;
+if (def.width === 1) {
+bytes[o] = value & 0xFF;
+return;
+}
+if (def.endian === 'be') {
+bytes[o] = (value >> 8) & 0xFF;
+bytes[o + 1] = value & 0xFF;
+} else {
+bytes[o] = value & 0xFF;
+bytes[o + 1] = (value >> 8) & 0xFF;
+}
+}
+function slotBaseOffset(idx) { return SLOT_BASE + idx * SLOT_STRIDE; }
+function readName(bytes, offset) {
+return readNameGeneric(bytes, offset, NAME_MAX_CHARS, 'le');
+}
+function writeName(bytes, offset, name) {
+writeNameGeneric(bytes, offset, name, NAME_MAX_CHARS, 'le');
+}
+function readNameGeneric(bytes, offset, maxChars, endian) {
+var chars = [];
+for (var i = 0; i < maxChars; i++) {
+var b0 = bytes[offset + i * 2];
+var b1 = bytes[offset + i * 2 + 1];
+var code = endian === 'be' ? ((b0 << 8) | b1) : (b0 | (b1 << 8));
+if (code === 0) break;
+chars.push(String.fromCharCode(code));
+}
+return chars.join('');
+}
+function writeNameGeneric(bytes, offset, name, maxChars, endian) {
+var padded = (name || '').slice(0, maxChars);
+for (var i = 0; i < maxChars; i++) {
+var code = i < padded.length ? padded.charCodeAt(i) : 0;
+if (endian === 'be') {
+bytes[offset + i * 2] = (code >> 8) & 0xFF;
+bytes[offset + i * 2 + 1] = code & 0xFF;
+} else {
+bytes[offset + i * 2] = code & 0xFF;
+bytes[offset + i * 2 + 1] = (code >> 8) & 0xFF;
+}
+}
+}
+function tokenizeCardTitle(value) {
+var tokens = [];
+value = value || '';
+for (var i = 0; i < value.length && tokens.length < CARD_TITLE_MAX_CHARS;) {
+if (value.slice(i, i + 2).toLowerCase() === 'e+') {
+tokens.push('e+');
+i += 2;
+} else {
+tokens.push(value[i]);
+i++;
+}
+}
+return tokens;
+}
+function readCardTitle(bytes) {
+var tokens = [];
+for (var i = 0; i < CARD_TITLE_MAX_CHARS; i++) {
+var pos = CARD_TITLE_OFFSET + i * 2;
+var code = (bytes[pos] << 8) | bytes[pos + 1];
+if (code === 0) break;
+tokens.push(code === CARD_TITLE_SYMBOL_CODE ? 'e+' : String.fromCharCode(code));
+}
+return tokens.join('');
+}
+function writeCardTitle(bytes, value) {
+var tokens = tokenizeCardTitle(value);
+for (var i = 0; i < CARD_TITLE_MAX_CHARS; i++) {
+var code = 0;
+if (i < tokens.length) {
+code = tokens[i] === 'e+' ? CARD_TITLE_SYMBOL_CODE : tokens[i].charCodeAt(0);
+}
+var pos = CARD_TITLE_OFFSET + i * 2;
+bytes[pos] = (code >> 8) & 0xFF;
+bytes[pos + 1] = code & 0xFF;
+}
+return tokens.join('');
+}
+function buildCardTextUI() {
+cardTextLabelEls = CARD_TEXT_LABELS.map(function (def) {
+return { def: def, input: $(def.id) };
+});
+CARD_DIALOGUE_OFFSETS.forEach(function (offset, index) {
+var team = CARD_DIALOGUE_TEAMS[index];
+var byteLength = Math.min(CARD_DIALOGUE_BYTE_LEN, TRAINER_RECORD_BASE - offset);
+var field = document.createElement('div');
+field.className = 'field';
+var label = document.createElement('label');
+label.innerHTML = CARD_DIALOGUE_TITLES[Math.floor(index / 3)];
+var input = document.createElement('textarea');
+input.id = 'cardDialogue' + (index + 1);
+input.spellcheck = false;
+var counter = document.createElement('div');
+counter.className = 'text-counter';
+field.appendChild(label);
+field.appendChild(input);
+field.appendChild(counter);
+dialogueTextGrids[team].appendChild(field);
+cardDialogueEls.push({ offset: offset, team: team, byteLength: byteLength, commandTerminator: false, input: input, counter: counter });
+});
+}
+function readDialogue(bytes, offset, byteLength) {
+var out = [];
+var end = offset + byteLength;
+for (var pos = offset; pos < end;) {
+if (bytes[pos] === 0 && bytes[pos + 1] === 0) break;
+if (bytes[pos] === 0xFF && bytes[pos + 1] === 0xFF && pos + 2 < end) {
+var command = bytes[pos + 2];
+if (command === 0x02) break; // terminator is restored on write
+if (command === 0x01) {
+out.push('\n');
+pos += 3;
+} else if (command === 0x04 && pos + 7 < end &&
+bytes[pos + 5] === 0xFF && bytes[pos + 6] === 0xFF && bytes[pos + 7] === 0x05) {
+var baseChar = String.fromCharCode((bytes[pos + 3] << 8) | bytes[pos + 4]);
+var reading = [];
+var rubyPos = pos + 8;
+while (rubyPos < end) {
+if (bytes[rubyPos] === 0xFF && bytes[rubyPos + 1] === 0xFF && bytes[rubyPos + 2] === 0x06) break;
+if (rubyPos + 1 >= end || (bytes[rubyPos] === 0 && bytes[rubyPos + 1] === 0)) break;
+reading.push(String.fromCharCode((bytes[rubyPos] << 8) | bytes[rubyPos + 1]));
+rubyPos += 2;
+}
+if (rubyPos + 2 < end && bytes[rubyPos] === 0xFF && bytes[rubyPos + 1] === 0xFF && bytes[rubyPos + 2] === 0x06) {
+out.push(baseChar + '《' + reading.join('') + '》');
+pos = rubyPos + 3;
+} else {
+out.push('{04:' + bytesToHex(bytes, pos + 3, pos + 5).replace(' ', '') + '}');
+pos += 5;
+}
+} else if (command === 0x04 && pos + 4 < end) {
+out.push('{04:' + bytesToHex(bytes, pos + 3, pos + 5).replace(' ', '') + '}');
+pos += 5;
+} else {
+out.push('{' + command.toString(16).toUpperCase().padStart(2, '0') + '}');
+pos += 3;
+}
+continue;
+}
+if (pos + 1 >= end) break;
+out.push(String.fromCharCode((bytes[pos] << 8) | bytes[pos + 1]));
+pos += 2;
+}
+return out.join('');
+}
+function dialogueUsesCommandTerminator(bytes, offset, byteLength) {
+var end = offset + byteLength;
+for (var pos = offset; pos < end;) {
+if (bytes[pos] === 0 && bytes[pos + 1] === 0) return false;
+if (bytes[pos] === 0xFF && bytes[pos + 1] === 0xFF && pos + 2 < end) {
+if (bytes[pos + 2] === 0x02) return true;
+pos += bytes[pos + 2] === 0x04 ? 5 : 3;
+} else {
+pos += 2;
+}
+}
+return false;
+}
+function encodeDialogue(value, commandTerminator) {
+var out = [];
+function appendChar(character) {
+var code = character.charCodeAt(0);
+out.push((code >> 8) & 0xFF, code & 0xFF);
+}
+for (var i = 0; i < value.length;) {
+if (value[i] === '\n') {
+out.push(0xFF, 0xFF, 0x01);
+i++;
+continue;
+}
+var token = value.slice(i).match(/^\{([0-9a-fA-F]{2})(?::([0-9a-fA-F]{4}))?\}/);
+if (token) {
+var command = parseInt(token[1], 16);
+out.push(0xFF, 0xFF, command);
+if (token[2]) {
+var parameter = parseInt(token[2], 16);
+out.push((parameter >> 8) & 0xFF, parameter & 0xFF);
+}
+i += token[0].length;
+continue;
+}
+if (i + 2 < value.length && value[i + 1] === '《') {
+var rubyEnd = value.indexOf('》', i + 2);
+if (rubyEnd !== -1) {
+var reading = value.slice(i + 2, rubyEnd);
+var baseCode = value.charCodeAt(i);
+out.push(0xFF, 0xFF, 0x04, (baseCode >> 8) & 0xFF, baseCode & 0xFF, 0xFF, 0xFF, 0x05);
+for (var r = 0; r < reading.length; r++) appendChar(reading[r]);
+out.push(0xFF, 0xFF, 0x06);
+i = rubyEnd + 1;
+continue;
+}
+}
+appendChar(value[i]);
+i++;
+}
+if (commandTerminator) out.push(0xFF, 0xFF, 0x02);
+else out.push(0x00, 0x00);
+return out;
+}
+function writeDialogue(bytes, offset, byteLength, value, commandTerminator) {
+var encoded = encodeDialogue(value, commandTerminator);
+if (encoded.length > byteLength) return false;
+bytes.fill(0, offset, offset + byteLength);
+bytes.set(encoded, offset);
+return true;
+}
+function refreshCardTextUI() {
+cardTitleInput.value = readCardTitle(state.bytes);
+cardTextLabelEls.forEach(function (item) {
+item.input.value = readNameGeneric(state.bytes, item.def.offset, item.def.maxChars, 'be');
+});
+cardDialogueEls.forEach(function (item) {
+item.commandTerminator = dialogueUsesCommandTerminator(state.bytes, item.offset, item.byteLength);
+item.input.value = readDialogue(state.bytes, item.offset, item.byteLength);
+updateDialogueCounter(item);
+});
+}
+function updateDialogueCounter(item) {
+var byteLength = encodeDialogue(item.input.value, item.commandTerminator).length;
+var valid = byteLength <= item.byteLength;
+item.input.classList.toggle('invalid', !valid);
+item.input.setCustomValidity(valid ? '' : 'Dialogue exceeds its ' + item.byteLength + '-byte block.');
+item.counter.classList.toggle('error', !valid);
+item.counter.textContent = byteLength + ' / ' + item.byteLength + ' bytes' +
+(valid ? '' : ' — shorten the text');
+return valid;
+}
+buildCardTextUI();
+function populateSelect(selectEl, options, opts) {
+opts = opts || {};
+selectEl.innerHTML = '';
+options.forEach(function (o) {
+var el = document.createElement('option');
+el.value = String(o.value);
+el.textContent = o.label;
+selectEl.appendChild(el);
+});
+}
+function ensureOptionExists(selectEl, value, fallbackLabel) {
+var found = false;
+for (var i = 0; i < selectEl.options.length; i++) {
+if (Number(selectEl.options[i].value) === Number(value)) { found = true; break; }
+}
+if (!found) {
+var el = document.createElement('option');
+el.value = String(value);
+el.textContent = (fallbackLabel || ('Value')) + '  #' + value + '  (not in reference sheet)';
+selectEl.insertBefore(el, selectEl.firstChild);
+}
+}
+var comboRegistry = {};
+function highlightMatch(label, query) {
+if (!query) return escapeHtml(label);
+var upperLabel = label.toUpperCase();
+var upperQuery = query.toUpperCase();
+if (upperLabel.indexOf(upperQuery) !== 0) return escapeHtml(label);
+var mid = label.slice(0, query.length);
+var after = label.slice(query.length);
+return '<mark>' + escapeHtml(mid) + '</mark>' + escapeHtml(after);
+}
+function createCombobox(inputEl, panelEl, options, fallbackLabel) {
+var state = {
+options: options,           // [{value, label}]
+value: null,                // currently committed numeric value (or null)
+filtered: [],
+activeIndex: -1,
+open: false,
+};
+function labelFor(value) {
+for (var i = 0; i < state.options.length; i++) {
+if (state.options[i].value === value) return state.options[i].label;
+}
+return null;
+}
+function position() {
+var r = inputEl.getBoundingClientRect();
+panelEl.style.left = r.left + 'px';
+panelEl.style.top = (r.bottom + 4) + 'px';
+panelEl.style.width = r.width + 'px';
+var spaceBelow = window.innerHeight - r.bottom - 4;
+if (spaceBelow < 160 && r.top > spaceBelow) {
+panelEl.style.top = 'auto';
+panelEl.style.bottom = (window.innerHeight - r.top + 4) + 'px';
+} else {
+panelEl.style.bottom = 'auto';
+}
+}
+function render(query) {
+var q = (query || '').trim();
+var matches;
+if (!q) {
+matches = state.options;
+} else {
+var qUpper = q.toUpperCase();
+matches = state.options.filter(function (o) {
+return o.label.toUpperCase().indexOf(qUpper) === 0 || String(o.value) === q;
+});
+}
+state.filtered = matches.slice(0, 200); // cap render for perf
+state.activeIndex = state.filtered.length ? 0 : -1;
+if (!state.filtered.length) {
+panelEl.innerHTML = '<div class="combo-option empty">No matches</div>';
+} else {
+panelEl.innerHTML = state.filtered.map(function (o, i) {
+return '<div class="combo-option' + (i === 0 ? ' active' : '') + '" data-idx="' + i + '">' +
+highlightMatch(o.label, q) + '</div>';
+}).join('');
+}
+}
+function openPanel(query) {
+render(query);
+position();
+panelEl.classList.add('show');
+inputEl.closest('.combo').classList.add('open');
+state.open = true;
+}
+function closePanel() {
+panelEl.classList.remove('show');
+inputEl.closest('.combo').classList.remove('open');
+state.open = false;
+state.activeIndex = -1;
+}
+function commit(value) {
+var lbl = labelFor(value);
+state.value = value;
+inputEl.value = lbl !== null ? lbl : (fallbackLabel + '  #' + value + '  (not in reference sheet)');
+inputEl.classList.remove('invalid');
+inputEl.dataset.value = String(value);
+}
+function setActive(idx) {
+var opts = panelEl.querySelectorAll('.combo-option');
+opts.forEach(function (el) { el.classList.remove('active'); });
+if (idx >= 0 && opts[idx]) {
+opts[idx].classList.add('active');
+opts[idx].scrollIntoView({ block: 'nearest' });
+}
+state.activeIndex = idx;
+}
+function selectActive() {
+if (state.activeIndex < 0 || !state.filtered[state.activeIndex]) return false;
+var chosen = state.filtered[state.activeIndex];
+commit(chosen.value);
+closePanel();
+inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+return true;
+}
+inputEl.addEventListener('focus', function () {
+inputEl.select();
+openPanel('');
+});
+inputEl.addEventListener('input', function () {
+openPanel(inputEl.value);
+});
+inputEl.addEventListener('keydown', function (e) {
+if (e.key === 'ArrowDown') {
+e.preventDefault();
+if (!state.open) { openPanel(inputEl.value); return; }
+setActive(Math.min(state.activeIndex + 1, state.filtered.length - 1));
+} else if (e.key === 'ArrowUp') {
+e.preventDefault();
+if (!state.open) { openPanel(inputEl.value); return; }
+setActive(Math.max(state.activeIndex - 1, 0));
+} else if (e.key === 'Enter') {
+e.preventDefault();
+if (state.open) selectActive();
+} else if (e.key === 'Escape') {
+if (state.value !== null) commit(state.value);
+closePanel();
+} else if (e.key === 'Tab') {
+if (state.open) selectActive();
+}
+});
+inputEl.addEventListener('blur', function () {
+setTimeout(function () {
+if (!state.open) return;
+var typed = inputEl.value.trim();
+var exact = state.options.find(function (o) { return o.label.toUpperCase() === typed.toUpperCase(); });
+if (exact) {
+commit(exact.value);
+inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+} else if (state.value !== null) {
+commit(state.value);
+}
+closePanel();
+}, 120);
+});
+panelEl.addEventListener('mousedown', function (e) {
+e.preventDefault();
+});
+panelEl.addEventListener('click', function (e) {
+var optEl = e.target.closest('.combo-option');
+if (!optEl || optEl.classList.contains('empty')) return;
+var idx = Number(optEl.dataset.idx);
+state.activeIndex = idx;
+selectActive();
+});
+window.addEventListener('scroll', function () { if (state.open) position(); }, true);
+window.addEventListener('resize', function () { if (state.open) position(); });
+document.addEventListener('mousedown', function (e) {
+if (!state.open) return;
+if (e.target === inputEl || panelEl.contains(e.target)) return;
+closePanel();
+});
+var api = {
+el: inputEl, // underlying DOM input, for attaching a native 'change' listener
+isCombo: true,
+get value() { return state.value === null ? '' : String(state.value); },
+set value(v) {
+var num = Number(v);
+commit(isNaN(num) ? 0 : num);
+},
+};
+comboRegistry[inputEl.id] = api;
+return api;
+}
+function setupDropdowns() {
+populateCardNumberSelect();
+panelColourSelect.innerHTML = '';
+PANEL_COLOURS.forEach(function (colour) {
+var option = document.createElement('option');
+option.value = String(colour.value);
+option.textContent = colour.label;
+panelColourSelect.appendChild(option);
+});
+battlefieldSelect.innerHTML = '';
+BATTLEFIELDS.forEach(function (battlefield) {
+var option = document.createElement('option');
+option.value = String(battlefield.value);
+option.textContent = battlefield.label;
+battlefieldSelect.appendChild(option);
+});
+fieldEls.species = createCombobox($('f_species'), $('f_species_panel'), LOOKUP.species, 'SPECIES');
+fieldEls.move1 = createCombobox($('f_move1'), $('f_move1_panel'), LOOKUP.moves, 'MOVE');
+fieldEls.move2 = createCombobox($('f_move2'), $('f_move2_panel'), LOOKUP.moves, 'MOVE');
+fieldEls.move3 = createCombobox($('f_move3'), $('f_move3_panel'), LOOKUP.moves, 'MOVE');
+fieldEls.move4 = createCombobox($('f_move4'), $('f_move4_panel'), LOOKUP.moves, 'MOVE');
+fieldEls.item = createCombobox($('f_item'), $('f_item_panel'), LOOKUP.items, 'ITEM');
+populateSelect(fieldEls.gender, LOOKUP.genders);
+populateSelect(fieldEls.nature, LOOKUP.natures);
+populateTeamSelect();
+populateSlotSelect(state.currentTeam);
+buildTrainerAttrUI();
+syncSelectedTrainerUI();
+}
+var TEAM_DISPLAY_NAMES = {
+1: 'Easy VR Trainer',
+2: 'Normal VR Trainer',
+3: 'Hard VR Trainer',
+4: 'Easy Bonus Trainer',
+5: 'Normal Bonus Trainer',
+6: 'Hard Bonus Trainer',
+7: 'Easy Shadow Trainer',
+8: 'Normal Shadow Trainer',
+9: 'Hard Shadow Trainer'
+};
+var PROMO_TEAM_DISPLAY_NAMES = {
+1: 'Easy Promo Trainer',
+2: 'Normal Promo Trainer',
+3: 'Hard Promo Trainer',
+4: 'Promo Bonus Trainer'
+};
+function populateCardNumberSelect() {
+var selected = state.currentCardNumber;
+cardNumberSelect.innerHTML = '<option value="">Select card...</option>';
+if (state.cardProfile !== 'promo') {
+for (var card = 1; card <= 20; card++) {
+var cardEl = document.createElement('option');
+cardEl.value = String(card);
+cardEl.textContent = 'Card ' + card;
+cardNumberSelect.appendChild(cardEl);
+}
+}
+if (selected !== null) cardNumberSelect.value = String(selected);
+}
+function activeTeamCount() {
+return state.cardProfile === 'promo' ? 4 : 9;
+}
+function populateTeamSelect() {
+var teamCount = activeTeamCount();
+teamSelect.innerHTML = '';
+TEAM_LIST.slice(0, teamCount).forEach(function (t) {
+var el = document.createElement('option');
+el.value = String(t.teamNum);
+el.textContent = state.cardProfile === 'promo' ?
+PROMO_TEAM_DISPLAY_NAMES[t.teamNum] :
+(TEAM_DISPLAY_NAMES[t.teamNum] || ('Team ' + t.teamNum + ' \u2014 ' + t.ownerLabel));
+teamSelect.appendChild(el);
+});
+if (state.currentTeam > teamCount) {
+state.currentTeam = 1;
+state.currentSlot = TEAM_SLOTS[1][0];
+}
+teamSelect.value = String(state.currentTeam);
+}
+function syncSelectedTrainerUI() {
+var selectedIndex = Math.max(0, Number(state.currentTeam || 1) - 1);
+document.querySelectorAll('#nameBody .trainer-category-panel').forEach(function (panel) {
+panel.hidden = false;
+});
+document.querySelectorAll('#nameBody .trainer-name-row').forEach(function (row, index) {
+row.style.display = index === selectedIndex ? '' : 'none';
+});
+document.querySelectorAll('#nameBody .trainer-attr-block').forEach(function (block, index) {
+block.style.display = index === selectedIndex ? '' : 'none';
+});
+document.querySelectorAll('#nameBody .shadow-dialogue-group').forEach(function (group) {
+group.style.display = Number(group.getAttribute('data-team')) === Number(state.currentTeam) ? '' : 'none';
+});
+}
+function buildTrainerAttrUI() {
+TRAINER_ATTR_KEYS.forEach(function (t) {
+var block = document.querySelector('.trainer-attr-block[data-trainer="' + t.key + '"]');
+if (!block) return;
+var bonusRewardDef = BONUS_REWARD_ITEMS[t.key];
+var isShadowTrainer = t.recordIdx >= 6;
+var hasTrainerClassControl = isShadowTrainer;
+var bonusRewardMarkup = bonusRewardDef ?
+'<div class="field bonus-reward-field" id="attr_' + t.key + '_bonusReward_field">' +
+'<label>Reward </label>' +
+'<div class="combo" id="attr_' + t.key + '_bonusReward_combo">' +
+'<input type="text" class="combo-input" id="attr_' + t.key + '_bonusReward" autocomplete="off" placeholder="Type to search&hellip;">' +
+'<div class="combo-caret"><svg viewBox="0 0 10 10"><path d="M1 3 L5 7 L9 3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+'<div class="combo-panel" id="attr_' + t.key + '_bonusReward_panel"></div>' +
+'</div>' +
+'</div>' : '';
+block.innerHTML =
+'<div class="field-grid">' +
+'<div class="field">' +
+'<label>Gender</label>' +
+'<select id="attr_' + t.key + '_gender"></select>' +
+'</div>' +
+'<div class="field">' +
+'<label>AI Index </label>' +
+'<input type="number" id="attr_' + t.key + '_aiIndex" min="0" max="552">' +
+'</div>' +
+'<div class="field">' +
+'<label>Trainer ID </label>' +
+'<input type="number" id="attr_' + t.key + '_trainerId" min="0" max="65535">' +
+'</div>' +
+'<div class="field">' +
+'<label>Model </label>' +
+'<select id="attr_' + t.key + '_modelId"></select>' +
+'</div>' +
+bonusRewardMarkup +
+(hasTrainerClassControl ?
+'<div class="field trainer-class-field" id="attr_' + t.key + '_trainerClass_field">' +
+'<label>Trainer Class</label>' +
+'<select id="attr_' + t.key + '_trainerClass"></select>' +
+'</div>' : '') +
+'</div>' +
+'<div class="field-grid">' +
+[1, 2, 3, 4].map(function (n) {
+return (
+'<div class="field">' +
+'<label>Item ' + n + '</label>' +
+'<div class="combo" id="attr_' + t.key + '_item' + n + '_combo">' +
+'<input type="text" class="combo-input" id="attr_' + t.key + '_item' + n + '" autocomplete="off" placeholder="Type to search&hellip;">' +
+'<div class="combo-caret"><svg viewBox="0 0 10 10"><path d="M1 3 L5 7 L9 3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+'<div class="combo-panel" id="attr_' + t.key + '_item' + n + '_panel"></div>' +
+'</div>' +
+'</div>'
+);
+}).join('') +
+'</div>';
+var genderEl = $('attr_' + t.key + '_gender');
+populateSelect(genderEl, LOOKUP.genders.filter(function (g) { return g.value === 0 || g.value === 1; }));
+var trainerClassEl = hasTrainerClassControl ? $('attr_' + t.key + '_trainerClass') : null;
+if (trainerClassEl) populateSelect(trainerClassEl, TRAINER_CLASSES);
+var modelIdEl = $('attr_' + t.key + '_modelId');
+populateSelect(modelIdEl, LOOKUP.models);
+trainerAttrEls[t.key] = {
+trainerClass: trainerClassEl,
+trainerClassField: hasTrainerClassControl ? $('attr_' + t.key + '_trainerClass_field') : null,
+bonusRewardField: bonusRewardDef ? $('attr_' + t.key + '_bonusReward_field') : null,
+gender: genderEl,
+aiIndex: $('attr_' + t.key + '_aiIndex'),
+trainerId: $('attr_' + t.key + '_trainerId'),
+modelId: modelIdEl,
+item1: createCombobox($('attr_' + t.key + '_item1'), $('attr_' + t.key + '_item1_panel'), LOOKUP.items, 'ITEM'),
+item2: createCombobox($('attr_' + t.key + '_item2'), $('attr_' + t.key + '_item2_panel'), LOOKUP.items, 'ITEM'),
+item3: createCombobox($('attr_' + t.key + '_item3'), $('attr_' + t.key + '_item3_panel'), LOOKUP.items, 'ITEM'),
+item4: createCombobox($('attr_' + t.key + '_item4'), $('attr_' + t.key + '_item4_panel'), LOOKUP.items, 'ITEM'),
+};
+if (bonusRewardDef) {
+trainerAttrEls[t.key].bonusReward = createCombobox(
+$('attr_' + t.key + '_bonusReward'),
+$('attr_' + t.key + '_bonusReward_panel'),
+LOOKUP.items,
+'ITEM'
+);
+}
+wireTrainerAttrEvents(t.key, t.recordIdx);
+});
+}
+function wireTrainerAttrEvents(key, recordIdx) {
+var els = trainerAttrEls[key];
+var base = trainerRecordBase(recordIdx);
+if (els.trainerClass) {
+els.trainerClass.addEventListener('change', function () {
+var classDef = trainerClassDefFor(key);
+if (!classDef) return;
+writeField(state.bytes, 0, classDef, Number(els.trainerClass.value));
+updateDownloadState();
+});
+}
+els.gender.addEventListener('change', function () {
+writeField(state.bytes, base, TRAINER_FIELDS.gender, Number(els.gender.value));
+updateDownloadState();
+});
+['aiIndex', 'trainerId', 'modelId'].forEach(function (fieldKey) {
+var el = els[fieldKey];
+var def = TRAINER_FIELDS[fieldKey];
+el.addEventListener('change', function () {
+var raw = Number(el.value);
+if (isNaN(raw)) raw = 0;
+var max = fieldKey === 'aiIndex' ? 552 : (def.width === 1 ? 255 : 65535);
+if (raw < 0) raw = 0;
+if (raw > max) raw = max;
+el.value = raw;
+writeField(state.bytes, base, def, raw);
+updateDownloadState();
+});
+});
+[1, 2, 3, 4].forEach(function (n) {
+var itemKey = 'item' + n;
+var combo = els[itemKey];
+var def = TRAINER_FIELDS[itemKey];
+combo.el.addEventListener('change', function () {
+writeField(state.bytes, base, def, Number(combo.value));
+updateDownloadState();
+});
+});
+if (els.bonusReward) {
+els.bonusReward.el.addEventListener('change', function () {
+var rewardDef = bonusRewardDefFor(key);
+if (!rewardDef) return;
+writeField(state.bytes, 0, rewardDef, Number(els.bonusReward.value));
+updateDownloadState();
+});
+}
+}
+function populateSlotSelect(teamNum) {
+slotSelect.innerHTML = '';
+var slots = TEAM_SLOTS[teamNum] || [];
+slots.forEach(function (i, pos) {
+var el = document.createElement('option');
+el.value = String(i);
+el.textContent = 'Pokemon ' + (pos + 1);
+slotSelect.appendChild(el);
+});
+}
+function showStatus(kind, title, bodyHtml) {
+statusArea.innerHTML =
+'<div class="status ' + kind + '">' +
+'<div class="dot"></div>' +
+'<div><strong>' + title + '</strong>' + (bodyHtml || '') + '</div>' +
+'</div>';
+}
+function bytesToHex(bytes, start, end) {
+var out = [];
+for (var i = start; i < end; i++) out.push(bytes[i].toString(16).toUpperCase().padStart(2, '0'));
+return out.join(' ');
+}
+function validateFile(bytes) {
+var errors = [];
+if (bytes.length !== EXPECTED_LENGTH) {
+errors.push('File is ' + bytes.length + ' bytes; expected exactly ' + EXPECTED_LENGTH + ' bytes.');
+}
+if (isStadiumCardBytes(bytes)) return errors;
+var checkLen = Math.min(CHECK_END, bytes.length);
+var mismatchAt = -1;
+for (var i = CHECK_START; i < checkLen; i++) {
+if (i === 8 && (bytes[i] === REFERENCE_BYTES[i] || bytes[i] === 0xB5 || bytes[i] === 0xB6)) continue;
+if (bytes[i] !== REFERENCE_BYTES[i]) { mismatchAt = i; break; }
+}
+if (mismatchAt !== -1) {
+errors.push('Header signature mismatch at byte offset ' + mismatchAt +
+' (0x' + mismatchAt.toString(16).toUpperCase() + '). Expected 0x' +
+REFERENCE_BYTES[mismatchAt].toString(16).toUpperCase().padStart(2, '0') +
+', found 0x' + (bytes[mismatchAt] !== undefined ? bytes[mismatchAt].toString(16).toUpperCase().padStart(2, '0') : '--') +
+'. This file does not look like a supported Colosseum e-Card dump.');
+} else if (bytes.length >= CHECK_END) {
+}
+return errors;
+}
+function cardIdMatches(a, b) {
+return a[0] === b[0] && a[2] === b[2];
+}
+function isPromotionalCardBytes(bytes) {
+return !!bytes && (bytes[8] === 0xB5 || bytes[8] === 0xB6);
+}
+function isStadiumCardBytes(bytes) {
+if (!bytes || bytes.length !== EXPECTED_LENGTH ||
+bytes[0] !== 0 || bytes[1] !== 0 || bytes[2] !== 0 || bytes[3] !== 1) return false;
+for (var i = 4; i < STADIUM_ID_OFFSET; i++) {
+if (bytes[i] !== 0) return false;
+}
+return true;
+}
+function inferStadiumVariant(bytes, fileName) {
+var fileMatch = String(fileName || '').match(/13-M00([1-4])/i);
+if (fileMatch) return Number(fileMatch[1]);
+var primaryIds = { 0x22: 1, 0x23: 2, 0x24: 3, 0x26: 4 };
+return primaryIds[bytes[STADIUM_ID_OFFSET]] || 1;
+}
+function setProfileVisibility(profile) {
+var stadium = profile === 'stadium';
+stadiumBody.hidden = !stadium;
+cardNumberField.hidden = profile === 'promo';
+panelColourField.hidden = stadium;
+[cardBody, textBody, nameBody, slotBody].forEach(function (el) {
+el.hidden = stadium;
+});
+}
+function refreshStadiumUI() {
+if (!state.bytes || state.cardProfile !== 'stadium') return;
+var battlefieldId = state.bytes[STADIUM_ID_OFFSET];
+var selectableBattlefieldId = Object.prototype.hasOwnProperty.call(
+BATTLEFIELD_ID_ALIASES, battlefieldId
+) ? BATTLEFIELD_ID_ALIASES[battlefieldId] : battlefieldId;
+ensureOptionExists(battlefieldSelect, selectableBattlefieldId, 'BATTLEFIELD ID');
+battlefieldSelect.value = String(selectableBattlefieldId);
+battlefieldNameInput.value = readNameGeneric(
+state.bytes, STADIUM_NAME_OFFSET, STADIUM_NAME_MAX_CHARS, 'be'
+);
+}
+function cardNumberFromBytes(bytes) {
+if (!bytes || bytes.length < CARD_ID_OFFSET + 3) return null;
+if (isPromotionalCardBytes(bytes)) return null;
+var id = [bytes[CARD_ID_OFFSET], bytes[CARD_ID_OFFSET + 1], bytes[CARD_ID_OFFSET + 2]];
+for (var i = 0; i < CARD_ID_BYTES.length; i++) {
+if (cardIdMatches(id, CARD_ID_BYTES[i])) return i + 1;
+}
+return null;
+}
+function cardBytesHex(cardNumber) {
+var id = CARD_ID_BYTES[cardNumber - 1];
+if (!id) return '--';
+return id.map(function (b) { return b.toString(16).toUpperCase().padStart(2, '0'); }).join(' ');
+}
+function writeCardNumber(cardNumber) {
+if (!state.bytes) return;
+var value = String(cardNumber);
+if (state.cardProfile === 'promo') return;
+var numericCard = Number(value);
+if (numericCard < 1 || numericCard > 20) return;
+cardNumber = numericCard;
+var id = CARD_ID_BYTES[numericCard - 1];
+for (var i = 0; i < 3; i++) state.bytes[CARD_ID_OFFSET + i] = id[i];
+CARD_NUMBER_OFFSETS.forEach(function (off) {
+state.bytes[off] = cardNumber;
+});
+state.currentCardNumber = cardNumber;
+cardNumberSelect.value = String(cardNumber);
+if (state.cardProfile === 'regular') {
+panelColourSelect.value = String(state.bytes[PANEL_COLOUR_OFFSET]);
+}
+populateTeamSelect();
+refreshNameUI();
+refreshSlotUI();
+updateDownloadState();
+}
+function refreshCardUI() {
+state.cardProfile = isStadiumCardBytes(state.bytes) ? 'stadium' :
+(isPromotionalCardBytes(state.bytes) ? 'promo' : 'regular');
+setProfileVisibility(state.cardProfile);
+if (state.cardProfile === 'stadium') {
+state.currentCardNumber = null;
+refreshStadiumUI();
+return;
+}
+panelSlotInput.value = String(state.bytes[PANEL_SLOT_OFFSET]);
+var cardNumber = cardNumberFromBytes(state.bytes);
+state.currentCardNumber = cardNumber;
+populateCardNumberSelect();
+populateTeamSelect();
+if (cardNumber !== null) {
+cardNumberSelect.value = String(cardNumber);
+} else {
+cardNumberSelect.value = '';
+}
+ensureOptionExists(panelColourSelect, state.bytes[PANEL_COLOUR_OFFSET], 'PANEL COLOUR');
+panelColourSelect.value = String(state.bytes[PANEL_COLOUR_OFFSET]);
+}
+function refreshNameUI() {
+['vr', 'bonus'].forEach(function (groupKey) {
+trainerNameEls[groupKey].forEach(function (item) {
+item.input.value = readNameGeneric(state.bytes, item.offset, item.maxChars, item.endian);
+});
+});
+TEAM_GROUPS.forEach(function (g) {
+if (g.key === 'vr' || g.key === 'bonus') return;
+var els = teamNameEls[g.key];
+if (!els || !els.input) return;
+var gname = readNameGeneric(state.bytes, g.offsets[0], g.maxChars, g.endian);
+els.input.value = gname;
+});
+refreshTrainerAttrUI();
+}
+function refreshTrainerAttrUI() {
+TRAINER_ATTR_KEYS.forEach(function (t) {
+var els = trainerAttrEls[t.key];
+if (!els) return; // buildTrainerAttrUI() hasn't run yet
+var base = trainerRecordBase(t.recordIdx);
+if (els.trainerClassField) els.trainerClassField.hidden = false;
+var rewardDef = bonusRewardDefFor(t.key);
+if (els.bonusRewardField) {
+els.bonusRewardField.hidden = !rewardDef;
+}
+if (els.trainerClass) {
+var classDef = trainerClassDefFor(t.key);
+var classVal = classDef ? readField(state.bytes, 0, classDef) : 0;
+ensureOptionExists(els.trainerClass, classVal, 'TRAINER CLASS');
+els.trainerClass.value = String(classVal);
+}
+var genderVal = readField(state.bytes, base, TRAINER_FIELDS.gender);
+ensureOptionExists(els.gender, genderVal, 'GENDER');
+els.gender.value = String(genderVal);
+els.aiIndex.value = readField(state.bytes, base, TRAINER_FIELDS.aiIndex);
+els.trainerId.value = readField(state.bytes, base, TRAINER_FIELDS.trainerId);
+var modelIdVal = readField(state.bytes, base, TRAINER_FIELDS.modelId);
+ensureOptionExists(els.modelId, modelIdVal, 'MODEL');
+els.modelId.value = String(modelIdVal);
+[1, 2, 3, 4].forEach(function (n) {
+var itemKey = 'item' + n;
+els[itemKey].value = readField(state.bytes, base, TRAINER_FIELDS[itemKey]);
+});
+if (els.bonusReward && rewardDef) {
+els.bonusReward.value = readField(state.bytes, 0, rewardDef);
+}
+});
+}
+function renderNamePreview(name) {
+var hex = [];
+var padded = (name || '').slice(0, NAME_MAX_CHARS);
+for (var i = 0; i < NAME_MAX_CHARS; i++) {
+var code = i < padded.length ? padded.charCodeAt(i) : 0;
+hex.push(code.toString(16).toUpperCase().padStart(4, '0'));
+}
+}
+function renderTeamNamePreview(group, name) {
+var els = teamNameEls[group.key];
+if (!els || !els.preview) return;
+var hex = [];
+var padded = (name || '').slice(0, group.maxChars);
+for (var i = 0; i < group.maxChars; i++) {
+var code = i < padded.length ? padded.charCodeAt(i) : 0;
+hex.push(code.toString(16).toUpperCase().padStart(4, '0'));
+}
+var offsetsLabel = group.offsets.map(function (o) { return o.toString(16).toUpperCase(); }).join(', 0x');
+var encLabel = group.endian === 'be' ? 'UTF-16BE' : 'UTF-16LE';
+els.preview.innerHTML = 'writes to <b>0x' + offsetsLabel + '</b> &middot; ' + encLabel + ': ' + hex.join(' ');
+}
+var shadowWarnEl = $('f_shadow_warn');
+var move1WarnEl = $('f_move1_warn');
+function refreshShadowWarning() {
+var shadowVal = Number(fieldEls.shadowId ? fieldEls.shadowId.value : 0);
+if (shadowWarnEl) {
+shadowWarnEl.hidden = !(state.currentSlot <= 23 && shadowVal > 0);
+}
+if (move1WarnEl) {
+move1WarnEl.hidden = !(shadowVal > 0);
+}
+}
+function refreshSlotUI() {
+var idx = state.currentSlot;
+var base = slotBaseOffset(idx);
+var teamNum = SLOT_TEAM[idx];
+if (teamNum) state.currentTeam = teamNum;
+teamSelect.value = String(state.currentTeam);
+syncSelectedTrainerUI();
+populateSlotSelect(state.currentTeam);
+slotSelect.value = String(idx);
+Object.keys(SLOT_FIELDS).forEach(function (key) {
+var def = SLOT_FIELDS[key];
+var val = readField(state.bytes, base, def);
+var el = fieldEls[key];
+if (!el) return;
+if (el.tagName === 'SELECT') {
+ensureOptionExists(el, val, key);
+el.value = String(val);
+} else {
+el.value = val;
+}
+});
+refreshShadowWarning();
+}
+function onFieldChange(key) {
+var def = SLOT_FIELDS[key];
+var el = fieldEls[key];
+var base = slotBaseOffset(state.currentSlot);
+var raw = Number(el.value);
+if (isNaN(raw)) raw = 0;
+var max = def.width === 1 ? 255 : 65535;
+if (FIELD_MAX[key] !== undefined) max = FIELD_MAX[key];
+if (raw < 0) raw = 0;
+if (raw > max) raw = max;
+el.value = raw;
+writeField(state.bytes, base, def, raw);
+updateDownloadState();
+if (key === 'shadowId') refreshShadowWarning();
+}
+setupDropdowns();
+Object.keys(fieldEls).forEach(function (key) {
+var el = fieldEls[key];
+if (!el) return;
+var target = el.isCombo ? el.el : el;
+target.addEventListener('change', function () { onFieldChange(key); });
+});
+cardNumberSelect.addEventListener('change', function () {
+var cardNumber = cardNumberSelect.value;
+if (Number(cardNumber) >= 1 && Number(cardNumber) <= 20) {
+writeCardNumber(cardNumber);
+}
+});
+panelSlotInput.addEventListener('change', function () {
+if (!state.loaded || state.cardProfile === 'stadium') return;
+var value = Math.max(0, Math.min(255, Math.round(Number(panelSlotInput.value) || 0)));
+panelSlotInput.value = String(value);
+state.bytes[PANEL_SLOT_OFFSET] = value;
+updateDownloadState();
+});
+panelColourSelect.addEventListener('change', function () {
+if (!state.loaded || state.cardProfile === 'stadium') return;
+state.bytes[PANEL_COLOUR_OFFSET] = Number(panelColourSelect.value) & 0xFF;
+updateDownloadState();
+});
+battlefieldSelect.addEventListener('change', function () {
+if (!state.loaded || state.cardProfile !== 'stadium') return;
+state.bytes[STADIUM_ID_OFFSET] = Number(battlefieldSelect.value) & 0xFF;
+updateDownloadState();
+});
+battlefieldNameInput.addEventListener('input', function () {
+if (!state.loaded || state.cardProfile !== 'stadium') return;
+var value = battlefieldNameInput.value.slice(0, STADIUM_NAME_MAX_CHARS);
+battlefieldNameInput.value = value;
+writeNameGeneric(state.bytes, STADIUM_NAME_OFFSET, value, STADIUM_NAME_MAX_CHARS, 'be');
+updateDownloadState();
+});
+cardTitleInput.addEventListener('input', function () {
+var normalized = writeCardTitle(state.bytes, cardTitleInput.value);
+if (cardTitleInput.value !== normalized) cardTitleInput.value = normalized;
+updateDownloadState();
+});
+cardTextLabelEls.forEach(function (item) {
+item.input.addEventListener('input', function () {
+var value = item.input.value.slice(0, item.def.maxChars);
+item.input.value = value;
+writeNameGeneric(state.bytes, item.def.offset, value, item.def.maxChars + 1, 'be');
+updateDownloadState();
+});
+});
+cardDialogueEls.forEach(function (item) {
+item.input.addEventListener('input', function () {
+if (updateDialogueCounter(item)) {
+writeDialogue(state.bytes, item.offset, item.byteLength, item.input.value, item.commandTerminator);
+updateDownloadState();
+}
+});
+});
+teamSelect.addEventListener('change', function () {
+state.currentTeam = Number(teamSelect.value);
+state.currentSlot = TEAM_SLOTS[state.currentTeam][0];
+syncSelectedTrainerUI();
+refreshSlotUI();
+});
+slotSelect.addEventListener('change', function () {
+state.currentSlot = Number(slotSelect.value);
+refreshSlotUI();
+});
+slotPrev.addEventListener('click', function () {
+var slots = TEAM_SLOTS[state.currentTeam];
+var pos = slots.indexOf(state.currentSlot);
+if (pos === -1) pos = 0;
+state.currentSlot = slots[(pos - 1 + slots.length) % slots.length];
+refreshSlotUI();
+});
+slotNext.addEventListener('click', function () {
+var slots = TEAM_SLOTS[state.currentTeam];
+var pos = slots.indexOf(state.currentSlot);
+if (pos === -1) pos = 0;
+state.currentSlot = slots[(pos + 1) % slots.length];
+refreshSlotUI();
+});
+['vr', 'bonus'].forEach(function (groupKey) {
+trainerNameEls[groupKey].forEach(function (item) {
+item.input.addEventListener('input', function () {
+var name = item.input.value.slice(0, item.maxChars);
+item.input.value = name;
+writeNameGeneric(state.bytes, item.offset, name, item.maxChars, item.endian);
+updateDownloadState();
+});
+});
+});
+TEAM_GROUPS.forEach(function (g) {
+if (g.key === 'vr' || g.key === 'bonus') return;
+var els = teamNameEls[g.key];
+if (!els || !els.input) return;
+els.input.addEventListener('input', function () {
+var name = els.input.value.slice(0, g.maxChars);
+els.input.value = name;
+writeNameGeneric(state.bytes, g.offsets[0], name, g.maxChars, g.endian);
+updateDownloadState();
+});
+});
+function updateDownloadState() {
+downloadBtn.disabled = !state.loaded;
+rawDownloadBtn.disabled = !state.loaded;
+resetBtn.disabled = !state.loaded;
+}
+resetBtn.addEventListener('click', function () {
+if (!state.loaded) return;
+state.bytes = state.originalBytes.slice();
+refreshCardUI();
+if (state.cardProfile === 'stadium') {
+refreshStadiumUI();
+updateDownloadState();
+return;
+}
+refreshCardTextUI();
+refreshNameUI();
+refreshSlotUI();
+});
+function saveBytes(bytes, fileName) {
+var blob = new Blob([bytes], { type: 'application/octet-stream' });
+var url = URL.createObjectURL(blob);
+var a = document.createElement('a');
+a.href = url;
+a.download = fileName;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+}
+downloadBtn.addEventListener('click', function () {
+if (!state.loaded) return;
+var base = state.fileName.replace(/\.(?:bin|raw)$/i, '');
+saveBytes(state.bytes, base + '_edited.bin');
+});
+rawDownloadBtn.addEventListener('click', function () {
+if (!state.loaded) return;
+try {
+var raw = window.ECardCodec.decodedToRaw(
+state.bytes, state.stadiumVariant, state.stadiumHeaderStyle
+);
+var base = state.fileName.replace(/\.(?:bin|raw)$/i, '');
+saveBytes(raw, base + '_encrypted.raw');
+} catch (error) {
+window.alert('RAW encoding failed: ' + error.message);
+}
+});
+function handleFile(file) {
+if (!file) return;
+var reader = new FileReader();
+reader.onload = function (e) {
+var uploaded = new Uint8Array(e.target.result), buf = uploaded;
+var hasRawExtension = /\.raw$/i.test(file.name);
+var isDotCodeRaw = uploaded.length === 0xB60;
+var isEncodedCard = uploaded.length === 0x840;
+var isRaw = hasRawExtension || isDotCodeRaw || isEncodedCard;
+var rawStadiumVariant = null;
+var rawStadiumHeaderStyle = null;
+if (isRaw) {
+try {
+var encodedBin;
+if (isEncodedCard) {
+encodedBin = uploaded;
+} else {
+try {
+encodedBin = window.ECardCodec.rawToBin(uploaded);
+} catch (strictRawError) {
+encodedBin = window.ECardCodec.rawToBin(uploaded, true);
+}
+}
+rawStadiumVariant = window.ECardCodec.stadiumVariantFromBin(encodedBin);
+rawStadiumHeaderStyle = window.ECardCodec.stadiumHeaderStyleFromBin(encodedBin);
+buf = window.ECardCodec.binToDecoded(encodedBin);
+} catch (error) {
+state.loaded = false;
+setLocked(true);
+showStatus('err', 'RAW file could not be decoded.', '<div>' + escapeHtml(error.message) + '</div>');
+updateDownloadState();
+return;
+}
+}
+var errors = validateFile(buf);
+if (errors.length) {
+state.loaded = false;
+setLocked(true);
+showStatus('err', 'File not recognized. Please try a different file.');
+updateDownloadState();
+return;
+}
+state.originalBytes = buf.slice();
+state.bytes = buf.slice();
+state.fileName = file.name;
+state.loaded = true;
+state.stadiumVariant = rawStadiumVariant ||
+(isStadiumCardBytes(buf) ? inferStadiumVariant(buf, file.name) : 1);
+state.stadiumHeaderStyle = rawStadiumHeaderStyle || 'battle';
+state.currentCardNumber = null;
+state.currentTeam = 1;
+state.currentSlot = 0;
+setLocked(false);
+var stadiumCard = isStadiumCardBytes(buf);
+showStatus('ok', 'File loaded successfully.');
+refreshCardUI();
+if (state.cardProfile === 'stadium') {
+refreshStadiumUI();
+} else {
+refreshCardTextUI();
+refreshNameUI();
+refreshSlotUI();
+}
+updateDownloadState();
+};
+reader.readAsArrayBuffer(file);
+}
+function handleNewFile() {
+var buf = REFERENCE_BYTES.slice();
+state.originalBytes = buf.slice();
+state.bytes = buf.slice();
+state.fileName = 'new_card.bin';
+state.loaded = true;
+state.stadiumVariant = 1;
+state.stadiumHeaderStyle = 'battle';
+state.currentCardNumber = null;
+state.currentTeam = 1;
+state.currentSlot = 0;
+setLocked(false);
+refreshCardUI();
+refreshCardTextUI();
+refreshNameUI();
+refreshSlotUI();
+updateDownloadState();
+}
+function escapeHtml(s) {
+return String(s).replace(/[&<>"']/g, function (c) {
+return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+});
+}
+document.querySelectorAll('.trainer-category').forEach(function (button) {
+button.addEventListener('click', function () {
+var target = $(button.getAttribute('data-target'));
+var isOpen = button.getAttribute('aria-expanded') === 'true';
+button.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+target.hidden = isOpen;
+});
+});
+function setLocked(locked) {
+[cardBody, stadiumBody, textBody, nameBody, slotBody, exportBody].forEach(function (el) {
+if (locked) el.classList.add('locked');
+else el.classList.remove('locked');
+});
+}
+fileInput.addEventListener('change', function (e) {
+if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+});
+createNewBtn.addEventListener('click', function () {
+handleNewFile();
+});
+['dragenter', 'dragover'].forEach(function (evt) {
+dropzone.addEventListener(evt, function (e) {
+e.preventDefault(); e.stopPropagation();
+dropzone.classList.add('drag');
+});
+});
+['dragleave', 'drop'].forEach(function (evt) {
+dropzone.addEventListener(evt, function (e) {
+e.preventDefault(); e.stopPropagation();
+dropzone.classList.remove('drag');
+});
+});
+dropzone.addEventListener('drop', function (e) {
+var files = e.dataTransfer.files;
+if (files && files[0]) handleFile(files[0]);
+});
+setLocked(true);
+updateDownloadState();
+})();</script>
+</body></html>
