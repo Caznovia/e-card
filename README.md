@@ -1,0 +1,1 @@
+A lightweight e-Card editor for use in Pokemon Colosseum - able to edit every detail of the Card e Room trainers, from names and models to Shadow Trainer dialogue to editing entire team sets (including custom Shadow Pokemon)!
